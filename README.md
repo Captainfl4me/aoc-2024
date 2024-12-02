@@ -1,6 +1,6 @@
 # 🎄 Advent of Code 2024 🎄
 
-<img src="./img/rustacean-flat-happy.png" width="164">
+<img src="./ressources/c-logo.png" width="164">
 
 Link to the website with puzzle: [Advent Of Code 2024](https://adventofcode.com/2024)
 
