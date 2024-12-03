@@ -13,6 +13,8 @@ new-day-%:
 	@echo "Creating day $*"
 	cp ./src/template.c ./src/day_$*.c
 	mkdir aoc-2024-inputs/day-$*/
+	touch aoc-2024-inputs/day-$*/input.txt
+	touch aoc-2024-inputs/day-$*/test.txt
 
 build-%: $(BUILD_DIR)/day_%
 	$(NOOP)
@@ -33,13 +35,13 @@ $(TEST_DIR): $(BUILD_DIR)
 	mkdir -p $(TEST_DIR)
 
 # Build bin dependency
-$(BUILD_DIR)/day_%: $(SRC_DIR)/main.c $(SRC_DIR)/day_%.c $(BUILD_DIR)
+$(BUILD_DIR)/day_%: $(SRC_DIR)/main.c $(SRC_DIR)/utils.c $(SRC_DIR)/day_%.c $(BUILD_DIR)
 	@echo "Building day $*"
-	$(CC) $(CFLAGS) -DAOC_DAY=$* $(SRC_DIR)/day_$*.c $(SRC_DIR)/main.c -o $(BUILD_DIR)/day_$*
+	$(CC) $(CFLAGS) -DAOC_DAY=$* $(SRC_DIR)/day_$*.c $(SRC_DIR)/utils.c $(SRC_DIR)/main.c -o $(BUILD_DIR)/day_$*
 	chmod +x $(BUILD_DIR)/day_$*
 
 # Build test bin dependency
-$(TEST_DIR)/day_%: $(SRC_DIR)/day_%.c $(TEST_DIR)
+$(TEST_DIR)/day_%: $(SRC_DIR)/day_%.c $(SRC_DIR)/utils.c $(TEST_DIR)
 	@echo "Building day $*"
-	$(CC) $(CFLAGS) -D TEST -lcriterion $(SRC_DIR)/day_$*.c -o $(TEST_DIR)/day_$*
+	$(CC) $(CFLAGS) -D TEST -lcriterion $(SRC_DIR)/day_$*.c $(SRC_DIR)/utils.c -o $(TEST_DIR)/day_$*
 	chmod +x $(TEST_DIR)/day_$*

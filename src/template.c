@@ -1,4 +1,5 @@
 #include "include/day.h"
+#include "include/utils.h"
 
 int part_1(char* input, size_t strlen) {
 	return 0;
