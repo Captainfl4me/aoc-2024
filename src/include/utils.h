@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define UNUSED(x) (void)(x)
+
 typedef struct string {
     char* text;
     size_t length;

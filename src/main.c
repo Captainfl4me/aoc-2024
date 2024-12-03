@@ -1,4 +1,5 @@
 #include "./include/day.h"
+#include "include/utils.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,6 +20,7 @@ uint64_t nanos()
 
 int main(int argc, char ** argv)
 {
+	UNUSED(argc); UNUSED(argv);
     printf("!! AOC 2024 day %d !!\r\n", AOC_DAY);
 
     FILE* fptr;
@@ -36,18 +38,18 @@ int main(int argc, char ** argv)
             long input_size = ftell(fptr);
             if (input_size == -1) {
                 fputs("ERR: Error reading file\r\n", stderr);
-                return -1;
+                return 1;
             }
 
             char* input_text = (char*)malloc(sizeof(char) * (input_size + 1));
             if (fseek(fptr, 0L, SEEK_SET) != 0) {
-                return -1;
+                return 1;
             }
 
             size_t read_length = fread(input_text, sizeof(char), input_size, fptr);
             if (ferror(fptr) != 0) {
                 fputs("ERR: Error reading file\r\n", stderr);
-                return -1;
+                return 1;
             }
             input_text[read_length++] = '\0';
 
@@ -66,11 +68,11 @@ int main(int argc, char ** argv)
 			fclose(fptr);
         } else {
 			fputs("ERR: FSEEK Error\r\n", stderr);
-			return -1;
+			return 1;
 		}
 	} else {
 		fputs("ERR: Input file not found!\r\n", stderr);
-		return -1;
+		return 1;
 	}
 
     return 0;
