@@ -11,6 +11,8 @@ int part_2(char* input, size_t strlen) {
 
 #ifdef TEST
 #include <criterion/criterion.h>
+#include <criterion/new/assert.h>
+
 Test(aoc, failing) {
     cr_assert(0);
 }
