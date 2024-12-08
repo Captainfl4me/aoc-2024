@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int part_1(char* input, size_t strlen)
+uint64_t part_1(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -31,7 +31,7 @@ int part_1(char* input, size_t strlen)
     return sum;
 }
 
-int part_2(char* input, size_t strlen)
+uint64_t part_2(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);

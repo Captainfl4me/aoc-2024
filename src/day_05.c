@@ -4,69 +4,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#define CAPACITY_STEP 5
-
-typedef struct list {
-    uint8_t* vector;
-    uint8_t length;
-    uint8_t current_capacity;
-} list;
-
-void init_list(list* list)
-{
-    if (list->vector != NULL) {
-        free(list->vector);
-    }
-    list->current_capacity = CAPACITY_STEP;
-    list->vector = (uint8_t*)malloc(sizeof(uint8_t) * list->current_capacity);
-    list->length = 0;
-}
-
-void add_unique_to_list(list* list, uint8_t value)
-{
-    for (int i = 0; i < list->length; i++) {
-        if (list->vector[i] == value) {
-            return;
-        }
-    }
-
-    if (list->length >= list->current_capacity) {
-        list->current_capacity += CAPACITY_STEP;
-        list->vector = (uint8_t*)realloc(list->vector, sizeof(uint8_t) * list->current_capacity);
-    }
-
-    list->vector[list->length++] = value;
-}
-void insert_value_at(list* list, uint8_t index, uint8_t value)
-{
-    if (index > list->length) {
-        return;
-    }
-
-    if (list->length >= list->current_capacity) {
-        list->current_capacity += CAPACITY_STEP;
-        list->vector = (uint8_t*)realloc(list->vector, sizeof(uint8_t) * list->current_capacity);
-    }
-
-    for (int i = list->length; i > index; i--) {
-        list->vector[i] = list->vector[i - 1];
-    }
-    list->vector[index] = value;
-    list->length++;
-}
-uint8_t is_value_in_list(list* list, uint8_t value)
-{
-    for (int k = 0; k < list->length; k++) {
-        if (list->vector[k] == value) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
 uint8_t valid_update_middle_page(uint8_t* update_pages_list, uint8_t update_pages_list_length, list reverse_page_order[99]);
 
-int part_1(char* input, size_t strlen)
+uint64_t part_1(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -136,7 +76,7 @@ int part_1(char* input, size_t strlen)
     return total_middle_page;
 }
 
-int part_2(char* input, size_t strlen)
+uint64_t part_2(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);

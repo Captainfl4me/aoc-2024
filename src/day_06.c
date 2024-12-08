@@ -3,49 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define CAPACITY_STEP 5
-
-typedef struct list {
-    uint8_t* vector;
-    uint8_t length;
-    uint8_t current_capacity;
-} list;
-
-void init_list(list* list)
-{
-    if (list->vector != NULL) {
-        free(list->vector);
-    }
-    list->current_capacity = CAPACITY_STEP;
-    list->vector = (uint8_t*)malloc(sizeof(uint8_t) * list->current_capacity);
-    list->length = 0;
-}
-
-void add_unique_to_list(list* list, uint8_t value)
-{
-    for (int i = 0; i < list->length; i++) {
-        if (list->vector[i] == value) {
-            return;
-        }
-    }
-
-    if (list->length >= list->current_capacity) {
-        list->current_capacity += CAPACITY_STEP;
-        list->vector = (uint8_t*)realloc(list->vector, sizeof(uint8_t) * list->current_capacity);
-    }
-
-    list->vector[list->length++] = value;
-}
-uint8_t is_value_in_list(list* list, uint8_t value)
-{
-    for (int k = 0; k < list->length; k++) {
-        if (list->vector[k] == value) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
 typedef enum orientation {
     up,
     right,
@@ -71,7 +28,7 @@ void apply_orientation_to_coord(size_t* pos_line, size_t* pos_column, orientatio
     }
 }
 
-int part_1(char* input, size_t strlen)
+uint64_t part_1(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -119,7 +76,7 @@ int part_1(char* input, size_t strlen)
     return total_visited;
 }
 
-int part_2(char* input, size_t strlen)
+uint64_t part_2(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -236,11 +193,11 @@ int part_2(char* input, size_t strlen)
 #include <criterion/criterion.h>
 #include <criterion/new/assert.h>
 
-// Test(aoc, part_1)
-// {
-//     char test_input[] = "....#.....\n.........#\n..........\n..#.......\n.......#..\n..........\n.#..^.....\n........#.\n#.........\n......#...\n";
-//     cr_assert(eq(int, part_1(test_input, sizeof(test_input)), 41));
-// }
+Test(aoc, part_1)
+{
+    char test_input[] = "....#.....\n.........#\n..........\n..#.......\n.......#..\n..........\n.#..^.....\n........#.\n#.........\n......#...\n";
+    cr_assert(eq(int, part_1(test_input, sizeof(test_input)), 41));
+}
 
 Test(aoc, part_2)
 {

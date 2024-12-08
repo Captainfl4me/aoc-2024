@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int part_1(char* input, size_t strlen)
+uint64_t part_1(char* input, size_t strlen)
 {
     UNUSED(strlen);
     regex_t mul_regex;
@@ -42,7 +42,7 @@ int part_1(char* input, size_t strlen)
     return result;
 }
 
-int part_2(char* input, size_t strlen)
+uint64_t part_2(char* input, size_t strlen)
 {
     UNUSED(strlen);
     regex_t mul_regex, do_regex, dont_regex;
