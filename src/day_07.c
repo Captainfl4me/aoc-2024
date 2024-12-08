@@ -76,10 +76,10 @@ void empty_queue(result_queue* queue)
         pop_queue(queue);
 }
 
-uint64_t part_1(char* input, size_t str_len)
+uint64_t part_1(char* input, size_t strlen)
 {
     size_t nb_line = 0;
-    string* string_vector = split_by_lines(input, str_len, &nb_line);
+    string* string_vector = split_by_lines(input, strlen, &nb_line);
 
     // Parse text to equation list
     equation eq_list[nb_line];
@@ -117,7 +117,6 @@ uint64_t part_1(char* input, size_t str_len)
 
             if (next_index < eq_list[i].values.length) {
                 if (current_value <= eq_list[i].test_value) {
-
                     push_to_queue(&queue, (temp_result) { .current_value = (current_value + (uint64_t)eq_list[i].values.vector[next_index]), .current_index = next_index });
                     push_to_queue(&queue, (temp_result) { .current_value = (current_value * (uint64_t)eq_list[i].values.vector[next_index]), .current_index = next_index });
                 }
@@ -134,7 +133,64 @@ uint64_t part_1(char* input, size_t str_len)
 
 uint64_t part_2(char* input, size_t strlen)
 {
-    return 0;
+    size_t nb_line = 0;
+    string* string_vector = split_by_lines(input, strlen, &nb_line);
+
+    // Parse text to equation list
+    equation eq_list[nb_line];
+    for (size_t i = 0; i < nb_line; i++) {
+        eq_list[i].values.vector = NULL;
+        eq_list[i].values.length = 0;
+        eq_list[i].values.current_capacity = 0;
+        init_list(&eq_list[i].values);
+
+        // Start test value
+        char* first_sep = strchr(string_vector[i].text, ':');
+        if (first_sep == NULL) {
+            continue;
+        } else {
+            *first_sep = '\0';
+            eq_list[i].test_value = atoll(string_vector[i].text);
+        }
+
+        // Parse values list
+        char* value_sep = first_sep + 2;
+        parse_text_to_list(&eq_list[i].values, value_sep, ' ');
+    }
+    free(string_vector);
+
+    uint64_t result_sum = 0;
+    for (size_t i = 0; i < nb_line; i++) {
+        result_queue queue;
+        init_queue(&queue);
+
+        push_to_queue(&queue, (temp_result) { .current_value = eq_list[i].values.vector[0], .current_index = 0 });
+        while (!is_queue_empty(&queue)) {
+            uint64_t current_value = queue.last->current_value;
+            size_t next_index = queue.last->current_index + 1;
+            pop_queue(&queue);
+
+            if (next_index < eq_list[i].values.length) {
+                if (current_value <= eq_list[i].test_value) {
+                    push_to_queue(&queue, (temp_result) { .current_value = (current_value + (uint64_t)eq_list[i].values.vector[next_index]), .current_index = next_index });
+                    push_to_queue(&queue, (temp_result) { .current_value = (current_value * (uint64_t)eq_list[i].values.vector[next_index]), .current_index = next_index });
+
+                    size_t new_value_length = snprintf(NULL, 0, "%u", eq_list[i].values.vector[next_index]);
+					uint32_t pow_10 = 1;
+					for (size_t k = 0; k < new_value_length; k++) {
+						pow_10 *= 10;
+					}
+                    push_to_queue(&queue, (temp_result) { .current_value = eq_list[i].values.vector[next_index] + pow_10 * current_value, .current_index = next_index });
+                }
+            } else if (current_value == eq_list[i].test_value) {
+                result_sum += eq_list[i].test_value;
+                break;
+            }
+        }
+        empty_queue(&queue);
+    }
+
+    return result_sum;
 }
 
 #ifdef TEST
@@ -176,5 +232,23 @@ Test(aoc, part_1_big_number)
 
     char test_input_4[] = "246016: 56 274 32 16 3\n";
     cr_assert(eq(ulong, part_1(test_input_4, sizeof(test_input_4)), 0));
+}
+
+Test(aoc, part_2)
+{
+    char test_input[] = "190: 10 19\n3267: 81 40 27\n83: 17 5\n156: 15 6\n7290: 6 8 6 15\n161011: 16 10 13\n192: 17 8 14\n21037: 9 7 18 13\n292: 11 6 16 20\n";
+    cr_assert(eq(int, part_2(test_input, sizeof(test_input)), 11387));
+}
+
+Test(aoc, part_2_further_case)
+{
+    char test_input_1[] = "1195: 1 19 5\n";
+    cr_assert(eq(int, part_2(test_input_1, sizeof(test_input_1)), 1195));
+
+    char test_input_2[] = "109: 10 9\n";
+    cr_assert(eq(int, part_2(test_input_2, sizeof(test_input_2)), 109));
+
+    char test_input_3[] = "910: 9 10\n";
+    cr_assert(eq(int, part_2(test_input_3, sizeof(test_input_3)), 910));
 }
 #endif
