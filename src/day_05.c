@@ -4,15 +4,18 @@
 #include <stdio.h>
 #include <string.h>
 
-uint8_t valid_update_middle_page(uint8_t* update_pages_list, uint8_t update_pages_list_length, list reverse_page_order[99]);
+BUILT_IN_CMP(uint8_t);
+LIST_DECL(uint8_t, 5, cmp_uint8_t);
+
+uint8_t valid_update_middle_page(uint8_t* update_pages_list, uint8_t update_pages_list_length, list_uint8_t reverse_page_order[99]);
 
 uint64_t part_1(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
 
-    list page_order[99] = { 0 };
-    list reverse_page_order[99] = { 0 };
+    list_uint8_t page_order[99] = { 0 };
+    list_uint8_t reverse_page_order[99] = { 0 };
     uint8_t first_section = 1;
     uint8_t max_update_pages = 0;
     uint8_t number_of_updates = 0;
@@ -42,13 +45,13 @@ uint64_t part_1(char* input, size_t strlen)
             uint8_t num_2 = atoi(string_vector[i].text + 3);
 
             if (page_order[num_1].vector == NULL) {
-                init_list(&page_order[num_1]);
+                init_list_uint8_t(&page_order[num_1]);
             }
-            add_unique_to_list(&page_order[num_1], num_2);
+            add_unique_to_list_uint8_t(&page_order[num_1], num_2);
             if (reverse_page_order[num_2].vector == NULL) {
-                init_list(&reverse_page_order[num_2]);
+                init_list_uint8_t(&reverse_page_order[num_2]);
             }
-            add_unique_to_list(&reverse_page_order[num_2], num_1);
+            add_unique_to_list_uint8_t(&reverse_page_order[num_2], num_1);
         } else {
             uint8_t pages_relative_idx = i - (nb_line - number_of_updates);
             pages_update[pages_relative_idx] = (uint8_t*)malloc(sizeof(uint8_t) * max_update_pages);
@@ -81,8 +84,8 @@ uint64_t part_2(char* input, size_t strlen)
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
 
-    list page_order[99] = { 0 };
-    list reverse_page_order[99] = { 0 };
+    list_uint8_t page_order[99] = { 0 };
+    list_uint8_t reverse_page_order[99] = { 0 };
     uint8_t first_section = 1;
     uint8_t max_update_pages = 0;
     uint8_t number_of_updates = 0;
@@ -112,13 +115,13 @@ uint64_t part_2(char* input, size_t strlen)
             uint8_t num_2 = atoi(string_vector[i].text + 3);
 
             if (page_order[num_1].vector == NULL) {
-                init_list(&page_order[num_1]);
+                init_list_uint8_t(&page_order[num_1]);
             }
-            add_unique_to_list(&page_order[num_1], num_2);
+            add_unique_to_list_uint8_t(&page_order[num_1], num_2);
             if (reverse_page_order[num_2].vector == NULL) {
-                init_list(&reverse_page_order[num_2]);
+                init_list_uint8_t(&reverse_page_order[num_2]);
             }
-            add_unique_to_list(&reverse_page_order[num_2], num_1);
+            add_unique_to_list_uint8_t(&reverse_page_order[num_2], num_1);
         } else {
             uint8_t pages_relative_idx = i - (nb_line - number_of_updates);
             pages_update[pages_relative_idx] = (uint8_t*)malloc(sizeof(uint8_t) * max_update_pages);
@@ -140,18 +143,18 @@ uint64_t part_2(char* input, size_t strlen)
     uint32_t total_middle_page = 0;
     for (uint8_t update_idx = 0; update_idx < number_of_updates; update_idx++) {
         if (valid_update_middle_page(pages_update[update_idx], max_update_pages, reverse_page_order) == 0) {
-            list new_order_list = { .vector = NULL, .length = 0, .current_capacity = 0 };
-            init_list(&new_order_list);
+            list_uint8_t new_order_list = { .vector = NULL, .length = 0, .current_capacity = 0 };
+            init_list_uint8_t(&new_order_list);
 
             uint8_t next_page_idx = 0;
             while (pages_update[update_idx][next_page_idx] != 0 && next_page_idx < max_update_pages) {
                 uint8_t index_to_insert = 0;
                 for (index_to_insert = 0; index_to_insert < new_order_list.length; index_to_insert++) {
-                    if (is_value_in_list(&page_order[pages_update[update_idx][next_page_idx]], new_order_list.vector[index_to_insert])) {
+                    if (is_value_in_list_uint8_t(&page_order[pages_update[update_idx][next_page_idx]], new_order_list.vector[index_to_insert])) {
                         break;
                     }
                 }
-                insert_value_at(&new_order_list, index_to_insert, pages_update[update_idx][next_page_idx]);
+                insert_value_at_uint8_t(&new_order_list, index_to_insert, pages_update[update_idx][next_page_idx]);
                 next_page_idx++;
             }
             total_middle_page += new_order_list.vector[new_order_list.length / 2];
@@ -162,7 +165,7 @@ uint64_t part_2(char* input, size_t strlen)
     return total_middle_page;
 }
 
-uint8_t valid_update_middle_page(uint8_t* update_pages_list, uint8_t update_pages_list_length, list reverse_page_order[99])
+uint8_t valid_update_middle_page(uint8_t* update_pages_list, uint8_t update_pages_list_length, list_uint8_t reverse_page_order[99])
 {
     uint8_t page_idx = 0;
     uint8_t is_update_valid = 1;
@@ -170,7 +173,7 @@ uint8_t valid_update_middle_page(uint8_t* update_pages_list, uint8_t update_page
         uint8_t next_page_idx = page_idx + 1;
         uint8_t is_number_valid = 1;
         while (update_pages_list[next_page_idx] != 0 && next_page_idx < update_pages_list_length) {
-            if (is_value_in_list(&reverse_page_order[update_pages_list[page_idx]], update_pages_list[next_page_idx])) {
+            if (is_value_in_list_uint8_t(&reverse_page_order[update_pages_list[page_idx]], update_pages_list[next_page_idx])) {
                 is_number_valid = 0;
             }
             next_page_idx++;

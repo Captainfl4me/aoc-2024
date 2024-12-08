@@ -1,11 +1,11 @@
 #include "include/day.h"
 #include "include/utils.h"
 
-int part_1(char* input, size_t strlen) {
+uint64_t part_1(char* input, size_t strlen) {
 	return 0;
 }
 
-int part_2(char* input, size_t strlen) {
+uint64_t part_2(char* input, size_t strlen) {
 	return 0;
 }
 

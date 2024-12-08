@@ -76,6 +76,9 @@ uint64_t part_1(char* input, size_t strlen)
     return total_visited;
 }
 
+BUILT_IN_CMP(uint8_t);
+LIST_DECL(uint8_t, 5, cmp_uint8_t);
+
 uint64_t part_2(char* input, size_t strlen)
 {
     size_t nb_line = 0;
@@ -96,7 +99,7 @@ uint64_t part_2(char* input, size_t strlen)
     uint8_t path_until_here[nb_line][string_vector[0].length];
     memset(path_until_here, 0, nb_line * string_vector[0].length);
 
-    list already_visit_grid[nb_line][string_vector[0].length];
+    list_uint8_t already_visit_grid[nb_line][string_vector[0].length];
     for (size_t i = 0; i < nb_line; i++) {
         for (size_t j = 0; j < string_vector[0].length; j++) {
             already_visit_grid[i][j].length = 0;
@@ -149,9 +152,9 @@ uint64_t part_2(char* input, size_t strlen)
                 string_vector[temp_wall_line].text[temp_wall_column] = '#';
                 do {
                     if (already_visit_grid[current_pos_line][current_pos_column].vector == NULL) {
-                        init_list(&already_visit_grid[current_pos_line][current_pos_column]);
+                        init_list_uint8_t(&already_visit_grid[current_pos_line][current_pos_column]);
                     }
-                    add_unique_to_list(&already_visit_grid[current_pos_line][current_pos_column], current_orientation);
+                    add_unique_to_list_uint8_t(&already_visit_grid[current_pos_line][current_pos_column], current_orientation);
 
                     next_pos_line = current_pos_line;
                     next_pos_column = current_pos_column;
@@ -167,7 +170,7 @@ uint64_t part_2(char* input, size_t strlen)
                     current_pos_line = next_pos_line;
                     current_pos_column = next_pos_column;
 
-                    if (current_pos_line < nb_line && current_pos_column < string_vector[0].length && is_value_in_list(&already_visit_grid[current_pos_line][current_pos_column], current_orientation)) {
+                    if (current_pos_line < nb_line && current_pos_column < string_vector[0].length && is_value_in_list_uint8_t(&already_visit_grid[current_pos_line][current_pos_column], current_orientation)) {
                         obstacle_found[temp_wall_line][temp_wall_column] = 1;
                         total_positions++;
                         break;

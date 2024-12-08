@@ -45,7 +45,7 @@ $(TEST_DIR): $(BUILD_DIR)
 # Build bin dependency
 $(BUILD_DIR)/day_%: $(SRC_DIR)/main.c $(SRC_DIR)/utils.c $(SRC_DIR)/day_%.c $(BUILD_DIR)
 	@echo "Building day $*"
-	$(CC) $(CFLAGS) -DAOC_DAY=$* $(SRC_DIR)/day_$*.c $(SRC_DIR)/utils.c $(SRC_DIR)/main.c -o $(BUILD_DIR)/day_$*
+	$(CC) $(CFLAGS) -DAOC_DAY=$(shell ./day_convert.sh $*) $(SRC_DIR)/day_$*.c $(SRC_DIR)/utils.c $(SRC_DIR)/main.c -o $(BUILD_DIR)/day_$*
 	chmod +x $(BUILD_DIR)/day_$*
 
 # Build test bin dependency

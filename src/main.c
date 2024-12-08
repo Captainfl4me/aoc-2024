@@ -18,9 +18,10 @@ uint64_t nanos()
     return ns;
 }
 
-int main(int argc, char ** argv)
+int main(int argc, char** argv)
 {
-	UNUSED(argc); UNUSED(argv);
+    UNUSED(argc);
+    UNUSED(argv);
     printf("!! AOC 2024 day %d !!\r\n", AOC_DAY);
 
     FILE* fptr;
@@ -32,7 +33,7 @@ int main(int argc, char ** argv)
     printf("Fetching input from: %s\r\n", input_path);
 
     fptr = fopen(input_path, "r");
-	free(input_path);
+    free(input_path);
     if (fptr != NULL) {
         if (fseek(fptr, 0L, SEEK_END) == 0) {
             long input_size = ftell(fptr);
@@ -56,24 +57,24 @@ int main(int argc, char ** argv)
             uint64_t start_time = nanos();
             uint64_t result = part_1(input_text, read_length);
             uint64_t end_time = nanos();
-			printf("[part_1] result = %lu\r\n", result);
-			printf("[part_1] time = %lu us\r\n\n", (end_time - start_time)/1000);
+            printf("[part_1] result = %lu\r\n", result);
+            printf("[part_1] time = %lu us\r\n\n", (end_time - start_time) / 1000);
 
             start_time = nanos();
             result = part_2(input_text, read_length);
             end_time = nanos();
-			printf("[part_2] result = %lu\r\n", result);
-			printf("[part_2] time = %lu us\r\n", (end_time - start_time)/1000);
+            printf("[part_2] result = %lu\r\n", result);
+            printf("[part_2] time = %lu us\r\n", (end_time - start_time) / 1000);
 
-			fclose(fptr);
+            fclose(fptr);
         } else {
-			fputs("ERR: FSEEK Error\r\n", stderr);
-			return 1;
-		}
-	} else {
-		fputs("ERR: Input file not found!\r\n", stderr);
-		return 1;
-	}
+            fputs("ERR: FSEEK Error\r\n", stderr);
+            return 1;
+        }
+    } else {
+        fputs("ERR: Input file not found!\r\n", stderr);
+        return 1;
+    }
 
     return 0;
 }

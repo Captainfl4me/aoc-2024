@@ -4,9 +4,13 @@
 #include <stdio.h>
 #include <string.h>
 
+BUILT_IN_CMP(uint32_t);
+LIST_DECL(uint32_t, 5, cmp_uint32_t);
+LIST_FOR_INT(uint32_t);
+
 typedef struct equation {
     uint64_t test_value;
-    list values;
+    list_uint32_t values;
 } equation;
 
 typedef struct temp_result {
@@ -87,7 +91,7 @@ uint64_t part_1(char* input, size_t strlen)
         eq_list[i].values.vector = NULL;
         eq_list[i].values.length = 0;
         eq_list[i].values.current_capacity = 0;
-        init_list(&eq_list[i].values);
+        init_list_uint32_t(&eq_list[i].values);
 
         // Start test value
         char* first_sep = strchr(string_vector[i].text, ':');
@@ -100,7 +104,7 @@ uint64_t part_1(char* input, size_t strlen)
 
         // Parse values list
         char* value_sep = first_sep + 2;
-        parse_text_to_list(&eq_list[i].values, value_sep, ' ');
+        parse_text_to_list_uint32_t(&eq_list[i].values, value_sep, ' ');
     }
     free(string_vector);
 
@@ -142,7 +146,7 @@ uint64_t part_2(char* input, size_t strlen)
         eq_list[i].values.vector = NULL;
         eq_list[i].values.length = 0;
         eq_list[i].values.current_capacity = 0;
-        init_list(&eq_list[i].values);
+        init_list_uint32_t(&eq_list[i].values);
 
         // Start test value
         char* first_sep = strchr(string_vector[i].text, ':');
@@ -155,7 +159,7 @@ uint64_t part_2(char* input, size_t strlen)
 
         // Parse values list
         char* value_sep = first_sep + 2;
-        parse_text_to_list(&eq_list[i].values, value_sep, ' ');
+        parse_text_to_list_uint32_t(&eq_list[i].values, value_sep, ' ');
     }
     free(string_vector);
 
