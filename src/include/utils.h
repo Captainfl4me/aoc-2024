@@ -18,17 +18,17 @@ string* split_by_lines(char* input, size_t strlen, size_t* vector_length);
 int compare_uint32_t(const void* a, const void* b);
 
 // LIST
-#define BUILT_IN_CMP(TYPE)     \
+#define BUILT_IN_CMP(TYPE)             \
     uint8_t cmp_##TYPE(TYPE a, TYPE b) \
-    {                          \
-        return a == b;         \
+    {                                  \
+        return a == b;                 \
     }
 
 #define LIST_DECL(TYPE, STEP_SIZE, EQ_FCT)                                                      \
     typedef struct list_##TYPE {                                                                \
         TYPE* vector;                                                                           \
-        uint32_t length;                                                                        \
-        uint32_t current_capacity;                                                              \
+        size_t length;                                                                          \
+        size_t current_capacity;                                                                \
     } list_##TYPE;                                                                              \
                                                                                                 \
     void init_list_##TYPE(list_##TYPE* list)                                                    \
@@ -42,7 +42,7 @@ int compare_uint32_t(const void* a, const void* b);
     }                                                                                           \
     uint8_t is_value_in_list_##TYPE(list_##TYPE* list, TYPE value)                              \
     {                                                                                           \
-        for (uint32_t k = 0; k < list->length; k++) {                                           \
+        for (size_t k = 0; k < list->length; k++) {                                             \
             if (EQ_FCT(list->vector[k], value)) {                                               \
                 return 1;                                                                       \
             }                                                                                   \
@@ -71,7 +71,7 @@ int compare_uint32_t(const void* a, const void* b);
                                                                                                 \
         list->vector[list->length++] = value;                                                   \
     }                                                                                           \
-    void insert_value_at_##TYPE(list_##TYPE* list, uint32_t index, TYPE value)                  \
+    void insert_value_at_##TYPE(list_##TYPE* list, size_t index, TYPE value)                    \
     {                                                                                           \
         if (index > list->length) {                                                             \
             return;                                                                             \
@@ -82,11 +82,32 @@ int compare_uint32_t(const void* a, const void* b);
             list->vector = (TYPE*)realloc(list->vector, sizeof(TYPE) * list->current_capacity); \
         }                                                                                       \
                                                                                                 \
-        for (uint32_t i = list->length; i > index; i--) {                                       \
+        for (size_t i = list->length; i > index; i--) {                                         \
             list->vector[i] = list->vector[i - 1];                                              \
         }                                                                                       \
         list->vector[index] = value;                                                            \
         list->length++;                                                                         \
+    }                                                                                           \
+    void delete_last_value_##TYPE(list_##TYPE* list)                                            \
+    {                                                                                           \
+        if (list->length < list->current_capacity - STEP_SIZE) {                                \
+            list->current_capacity -= STEP_SIZE;                                                \
+            list->vector = (TYPE*)realloc(list->vector, sizeof(TYPE) * list->current_capacity); \
+        }                                                                                       \
+                                                                                                \
+        list->length--;                                                                         \
+    }                                                                                           \
+    void delete_value_at_##TYPE(list_##TYPE* list, size_t index)                                \
+    {                                                                                           \
+        for (size_t i = index; i < list->length - 1; i++) {                                     \
+            list->vector[i] = list->vector[i + 1];                                              \
+        }                                                                                       \
+        if (list->length < list->current_capacity - STEP_SIZE) {                                \
+            list->current_capacity -= STEP_SIZE;                                                \
+            list->vector = (TYPE*)realloc(list->vector, sizeof(TYPE) * list->current_capacity); \
+        }                                                                                       \
+                                                                                                \
+        list->length--;                                                                         \
     }
 
 #define LIST_FOR_INT(TYPE)                                                  \
