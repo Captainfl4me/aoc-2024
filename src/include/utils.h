@@ -131,4 +131,78 @@ typedef struct pos {
     int column;
 } pos;
 
+typedef enum direction {
+    up,
+    right,
+    down,
+    left
+} direction;
+
+void apply_direction(pos* current_pos, direction dir);
+
+// QUEUE
+#define QUEUE_DECL(TYPE)                                                                             \
+    typedef struct queue_##TYPE_wrapper {                                                            \
+        TYPE value;                                                                                  \
+        struct queue_##TYPE_wrapper* next_in_list;                                                   \
+        struct queue_##TYPE_wrapper* prev_in_list;                                                   \
+    } queue_##TYPE_wrapper;                                                                          \
+    typedef struct queue_##TYPE {                                                                    \
+        size_t queue_length;                                                                         \
+        queue_##TYPE_wrapper* first;                                                                 \
+        queue_##TYPE_wrapper* last;                                                                  \
+    } queue_##TYPE;                                                                                  \
+                                                                                                     \
+    void init_queue_##TYPE(queue_##TYPE* queue)                                                      \
+    {                                                                                                \
+        queue->queue_length = 0;                                                                     \
+        queue->first = NULL;                                                                         \
+        queue->last = NULL;                                                                          \
+    }                                                                                                \
+    uint8_t is_queue_empty_##TYPE(queue_##TYPE* queue)                                               \
+    {                                                                                                \
+        return queue->queue_length == 0;                                                             \
+    }                                                                                                \
+    void push_to_queue_##TYPE(queue_##TYPE* queue, TYPE value)                                       \
+    {                                                                                                \
+        if (queue->last == NULL) {                                                                   \
+            queue->first = (queue_##TYPE_wrapper*)malloc(sizeof(queue_##TYPE_wrapper));              \
+            queue->first->value = value;                                                             \
+            queue->first->next_in_list = NULL;                                                       \
+            queue->first->prev_in_list = NULL;                                                       \
+                                                                                                     \
+            queue->last = queue->first;                                                              \
+        } else {                                                                                     \
+            queue->last->next_in_list = (queue_##TYPE_wrapper*)malloc(sizeof(queue_##TYPE_wrapper)); \
+            queue->last->next_in_list->value = value;                                                \
+            queue->last->next_in_list->next_in_list = NULL;                                          \
+            queue->last->next_in_list->prev_in_list = queue->last;                                   \
+                                                                                                     \
+            queue->last = queue->last->next_in_list;                                                 \
+        }                                                                                            \
+        queue->queue_length++;                                                                       \
+    }                                                                                                \
+    void pop_queue_##TYPE(queue_##TYPE* queue)                                                       \
+    {                                                                                                \
+        if (queue->queue_length == 0)                                                                \
+            return;                                                                                  \
+                                                                                                     \
+        if (queue->queue_length == 1) {                                                              \
+            free(queue->first);                                                                      \
+            queue->first = NULL;                                                                     \
+            queue->last = NULL;                                                                      \
+        } else {                                                                                     \
+            queue_##TYPE_wrapper* to_delete = queue->last;                                           \
+            queue->last = queue->last->prev_in_list;                                                 \
+            queue->last->next_in_list = NULL;                                                        \
+            free(to_delete);                                                                         \
+        }                                                                                            \
+        queue->queue_length--;                                                                       \
+    }                                                                                                \
+    void empty_queue_##TYPE(queue_##TYPE* queue)                                                     \
+    {                                                                                                \
+        while (!is_queue_empty_##TYPE(queue))                                                        \
+            pop_queue_##TYPE(queue);                                                                 \
+    }
+
 #endif

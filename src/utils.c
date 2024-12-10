@@ -45,3 +45,21 @@ int compare_uint32_t(const void* a, const void* b)
 {
     return (*(uint32_t*)a - *(uint32_t*)b);
 }
+
+void apply_direction(pos* current_pos, direction dir)
+{
+    switch (dir) {
+    case up:
+        current_pos->line--;
+        break;
+    case right:
+        current_pos->column++;
+        break;
+    case down:
+        current_pos->line++;
+        break;
+    case left:
+        current_pos->column--;
+        break;
+    }
+}
