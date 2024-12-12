@@ -59,15 +59,7 @@ uint64_t part_1(char* input, size_t strlen)
     return total_cost;
 }
 
-typedef struct edge {
-    char dir;
-    pos pos;
-} edge;
-uint8_t edge_eq(edge a, edge b)
-{
-    return ((a.pos.line == b.pos.line) && (a.pos.column == b.pos.column)) && a.dir == b.dir;
-}
-LIST_DECL(edge, 5, edge_eq);
+LIST_DECL(pos, 5, pos_eq);
 
 uint8_t size_t_eq(size_t a, size_t b)
 {
@@ -85,7 +77,6 @@ uint64_t part_2(char* input, size_t strlen)
     memset(already_mapped, 0, nb_line * nb_column);
     char current_region = '\0';
     uint64_t total_cost = 0;
-    printf("== == ==\n");
     for (size_t i = 0; i < nb_line; i++) {
         for (size_t j = 0; j < nb_column; j++) {
             if (already_mapped[i][j] == 1) {
@@ -96,8 +87,10 @@ uint64_t part_2(char* input, size_t strlen)
             init_queue_pos(&queue);
             push_to_queue_pos(&queue, (pos) { .line = i, .column = j });
 
-            list_edge edges = { .vector = NULL };
-            init_list_edge(&edges);
+            list_pos edges[4] = { { .vector = NULL }, { .vector = NULL }, { .vector = NULL }, { .vector = NULL } };
+            for (size_t k = 0; k < 4; k++) {
+                init_list_pos(&edges[k]);
+            }
 
             current_region = string_vector[i].text[j];
             uint32_t area = 0;
@@ -111,150 +104,59 @@ uint64_t part_2(char* input, size_t strlen)
                 area++;
                 already_mapped[current_pos.line][current_pos.column] = 1;
 
-                for (int i = 0; i < 4; i++) {
+                for (int k = 0; k < 4; k++) {
                     pos next_pos = current_pos;
-                    direction dir = i % 4;
+                    direction dir = k % 4;
                     apply_direction(&next_pos, dir);
 
                     if (next_pos.line < 0 || next_pos.column < 0 || (size_t)next_pos.line >= nb_line || (size_t)next_pos.column >= nb_column) {
-                        char edge_dir = dir % 2 ? '|' : '-';
-                        add_unique_to_list_edge(&edges, (edge) { .pos = next_pos, .dir = edge_dir });
+                        add_unique_to_list_pos(&edges[dir], next_pos);
                     } else if (string_vector[next_pos.line].text[next_pos.column] == current_region) {
                         if (already_mapped[next_pos.line][next_pos.column] == 0) {
                             push_to_queue_pos(&queue, next_pos);
                         }
                     } else {
-                        char edge_dir = dir % 2 ? '|' : '-';
-                        add_unique_to_list_edge(&edges, (edge) { .pos = next_pos, .dir = edge_dir });
+                        add_unique_to_list_pos(&edges[dir], next_pos);
                     }
                 }
             }
 
             uint32_t edge_number = 0;
-            while (edges.length > 0) {
-                list_edge visited_edge = { .vector = NULL };
-                init_list_edge(&visited_edge);
+            for (size_t k = 0; k < 4; k++) {
+                while (edges[k].length > 0) {
+                    edge_number++;
+                    list_pos visited_edge = { .vector = NULL };
+                    init_list_pos(&visited_edge);
 
-                edge current_edge = edges.vector[0];
-                direction start_dir = current_edge.dir == '-' ? right : up;
-                char other_dir = current_edge.dir == '-' ? '|' : '-';
-                int idx;
-                if ((idx = index_of_edge(&edges, (edge) { .dir = other_dir, .pos = current_edge.pos })) >= 0) {
-                    current_edge = edges.vector[idx];
-                    char next_dir = current_edge.dir;
-                    uint8_t forward_empty = 0;
-                    uint8_t loop_counter = 0;
+                    pos starting_edge = edges[k].vector[0];
+                    pos current_pos = starting_edge;
+                    direction dir = k % 2 == 0 ? right : up;
+                    uint8_t front_is_empty = 0;
                     do {
-                        loop_counter++;
-                        pos next_pos = current_edge.pos;
-                        apply_direction(&next_pos, start_dir);
-                        forward_empty = !is_value_in_list_edge(&edges, (edge) { .dir = next_dir, .pos = next_pos });
-                        if (forward_empty) {
-                            start_dir = (start_dir - 1) % 4;
-                            next_dir = (start_dir % 2) ? '|' : '-';
+                        add_unique_to_list_pos(&visited_edge, current_pos);
+                        apply_direction(&current_pos, dir);
+                        front_is_empty = !is_value_in_list_pos(&edges[k], current_pos);
+                    } while (!front_is_empty);
+
+                    dir = k % 2 == 0 ? left : down;
+                    current_pos = starting_edge;
+                    do {
+                        add_unique_to_list_pos(&visited_edge, current_pos);
+                        apply_direction(&current_pos, dir);
+                        front_is_empty = !is_value_in_list_pos(&edges[k], current_pos);
+                    } while (!front_is_empty);
+
+                    for (size_t z = 0; z < visited_edge.length; z++) {
+                        int idx = index_of_pos(&edges[k], visited_edge.vector[z]);
+                        if (idx >= 0) {
+                            delete_value_at_pos(&edges[k], idx);
                         }
-                    } while (forward_empty && loop_counter <= 4);
-                }
-                direction current_dir = start_dir;
-                pos start_pos = current_edge.pos;
-                uint8_t has_inner_turn = 1;
-                uint8_t skip_step = 0;
-
-                printf("[%c] start_with : %d %d %d\n", current_region, current_edge.pos.line, current_edge.pos.column, current_dir);
-                do {
-                    int idx = -1;
-                    add_unique_to_list_edge(&visited_edge, current_edge);
-
-                    pos next_pos = current_edge.pos;
-                    apply_direction(&next_pos, current_dir);
-                    char other_dir = current_edge.dir == '-' ? '|' : '-';
-                    add_unique_to_list_edge(&visited_edge, (edge) { .dir = other_dir, .pos = current_edge.pos });
-
-                    pos direct_right = current_edge.pos;
-                    direction right_dir = (current_dir + 1) % 4;
-                    apply_direction(&direct_right, right_dir);
-
-                    if (is_value_in_list_edge(&edges, (edge) { .dir = other_dir, .pos = direct_right })) {
-                        skip_step = 0;
-                        edge_number++;
-                        current_edge.pos = direct_right;
-                        current_edge.dir = other_dir;
-                        current_dir = right_dir;
-                        printf("direct right: %d %d %d\n", direct_right.line, direct_right.column, right_dir);
-                    } else if (has_inner_turn == 0 && is_value_in_list_edge(&edges, (edge) { .dir = other_dir, .pos = current_edge.pos })) {
-                        skip_step = 0;
-                        uint8_t first_check = 0;
-                        edge_number++;
-                        direction new_dir = (current_dir + 1) % 4;
-                        pos next_pos = current_edge.pos;
-                        apply_direction(&next_pos, new_dir);
-
-                        if ((next_pos.line >= 0 && next_pos.column >= 0 && (size_t)next_pos.line < nb_line && (size_t)next_pos.column < nb_column) && string_vector[next_pos.line].text[next_pos.column] == current_region) {
-                            new_dir = current_dir;
-                            do {
-                                if (first_check > 0) {
-                                    edge_number++;
-                                }
-                                first_check++;
-                                printf("wrongdir | ");
-                                new_dir = (new_dir - 1) % 4;
-                                next_pos = current_edge.pos;
-                                apply_direction(&next_pos, new_dir);
-                            } while ((next_pos.line >= 0 && next_pos.column >= 0 && (size_t)next_pos.line < nb_line && (size_t)next_pos.column < nb_column) && string_vector[next_pos.line].text[next_pos.column] == current_region && first_check <= 3);
-                        }
-
-                        if (first_check <= 1) {
-                            current_edge.dir = other_dir;
-                        }
-                        printf("inner corner: %d %d %d\n", current_edge.pos.line, current_edge.pos.column, new_dir);
-                        current_dir = new_dir;
-                        has_inner_turn = 1;
-                    } else {
-                        has_inner_turn = 0;
-                        direction new_dir = (current_dir + 1) % 4;
-                        pos new_pos = next_pos;
-                        apply_direction(&new_pos, new_dir);
-
-                        if ((idx = index_of_edge(&edges, (edge) { .dir = other_dir, .pos = new_pos })) < 0) {
-                            if ((idx = index_of_edge(&edges, (edge) { .dir = current_edge.dir, .pos = next_pos })) >= 0) {
-                                has_inner_turn = 0;
-                                current_edge.pos = next_pos;
-                                printf("follow: %d %d %d\n", next_pos.line, next_pos.column, current_dir);
-                                continue;
-                            } else {
-                                new_dir = (current_dir - 1) % 4;
-                                new_pos = next_pos;
-                                apply_direction(&new_pos, new_dir);
-                                idx = index_of_edge(&edges, (edge) { .dir = other_dir, .pos = new_pos });
-                                if (idx < 0) {
-                                    skip_step++;
-                                    printf("skip\n");
-                                    continue;
-                                }
-                            }
-                        } else {
-                            skip_step = 0;
-                        }
-                        edge_number++;
-
-                        printf("corner: %d %d %d\n", new_pos.line, new_pos.column, new_dir);
-
-                        current_edge.pos = new_pos;
-                        current_edge.dir = other_dir;
-                        current_dir = new_dir;
                     }
-                } while (!(pos_eq(current_edge.pos, start_pos) && current_dir == start_dir) || skip_step == 1);
-
-                for (size_t k = 0; k < visited_edge.length; k++) {
-                    int idx = index_of_edge(&edges, visited_edge.vector[k]);
-                    if (idx >= 0) {
-                        delete_value_at_edge(&edges, idx);
-                    }
+                    free(visited_edge.vector);
                 }
+                free(edges[k].vector);
             }
-            free(edges.vector);
 
-            printf("$$ %d %d\n", area, edge_number);
             total_cost += area * edge_number;
         }
     }
