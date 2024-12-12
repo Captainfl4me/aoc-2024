@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -O3 
-CTESTFLAGS = -Wall -Wextra -g 
+CFLAGS = -Wall -Wextra -O3 -lm
+CTESTFLAGS = -Wall -Wextra -g -lm
 SRC_DIR = src
 BUILD_DIR = build
 TEST_DIR = build/test

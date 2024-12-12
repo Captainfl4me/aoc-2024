@@ -141,68 +141,106 @@ typedef enum direction {
 void apply_direction(pos* current_pos, direction dir);
 
 // QUEUE
-#define QUEUE_DECL(TYPE)                                                                             \
-    typedef struct queue_##TYPE_wrapper {                                                            \
-        TYPE value;                                                                                  \
-        struct queue_##TYPE_wrapper* next_in_list;                                                   \
-        struct queue_##TYPE_wrapper* prev_in_list;                                                   \
-    } queue_##TYPE_wrapper;                                                                          \
-    typedef struct queue_##TYPE {                                                                    \
-        size_t queue_length;                                                                         \
-        queue_##TYPE_wrapper* first;                                                                 \
-        queue_##TYPE_wrapper* last;                                                                  \
-    } queue_##TYPE;                                                                                  \
-                                                                                                     \
-    void init_queue_##TYPE(queue_##TYPE* queue)                                                      \
-    {                                                                                                \
-        queue->queue_length = 0;                                                                     \
-        queue->first = NULL;                                                                         \
-        queue->last = NULL;                                                                          \
-    }                                                                                                \
-    uint8_t is_queue_empty_##TYPE(queue_##TYPE* queue)                                               \
-    {                                                                                                \
-        return queue->queue_length == 0;                                                             \
-    }                                                                                                \
-    void push_to_queue_##TYPE(queue_##TYPE* queue, TYPE value)                                       \
-    {                                                                                                \
-        if (queue->last == NULL) {                                                                   \
-            queue->first = (queue_##TYPE_wrapper*)malloc(sizeof(queue_##TYPE_wrapper));              \
-            queue->first->value = value;                                                             \
-            queue->first->next_in_list = NULL;                                                       \
-            queue->first->prev_in_list = NULL;                                                       \
-                                                                                                     \
-            queue->last = queue->first;                                                              \
-        } else {                                                                                     \
-            queue->last->next_in_list = (queue_##TYPE_wrapper*)malloc(sizeof(queue_##TYPE_wrapper)); \
-            queue->last->next_in_list->value = value;                                                \
-            queue->last->next_in_list->next_in_list = NULL;                                          \
-            queue->last->next_in_list->prev_in_list = queue->last;                                   \
-                                                                                                     \
-            queue->last = queue->last->next_in_list;                                                 \
-        }                                                                                            \
-        queue->queue_length++;                                                                       \
-    }                                                                                                \
-    void pop_queue_##TYPE(queue_##TYPE* queue)                                                       \
-    {                                                                                                \
-        if (queue->queue_length == 0)                                                                \
-            return;                                                                                  \
-                                                                                                     \
-        if (queue->queue_length == 1) {                                                              \
-            free(queue->first);                                                                      \
-            queue->first = NULL;                                                                     \
-            queue->last = NULL;                                                                      \
-        } else {                                                                                     \
-            queue_##TYPE_wrapper* to_delete = queue->last;                                           \
-            queue->last = queue->last->prev_in_list;                                                 \
-            queue->last->next_in_list = NULL;                                                        \
-            free(to_delete);                                                                         \
-        }                                                                                            \
-        queue->queue_length--;                                                                       \
-    }                                                                                                \
-    void empty_queue_##TYPE(queue_##TYPE* queue)                                                     \
-    {                                                                                                \
-        while (!is_queue_empty_##TYPE(queue))                                                        \
-            pop_queue_##TYPE(queue);                                                                 \
+#define QUEUE_DECL(TYPE)                                                                                 \
+    typedef struct queue_##TYPE##_wrapper {                                                              \
+        TYPE value;                                                                                      \
+        struct queue_##TYPE##_wrapper* next_in_list;                                                     \
+        struct queue_##TYPE##_wrapper* prev_in_list;                                                     \
+    } queue_##TYPE##_wrapper;                                                                            \
+    typedef struct queue_##TYPE {                                                                        \
+        size_t queue_length;                                                                             \
+        queue_##TYPE##_wrapper* first;                                                                   \
+        queue_##TYPE##_wrapper* last;                                                                    \
+    } queue_##TYPE;                                                                                      \
+                                                                                                         \
+    void init_queue_##TYPE(queue_##TYPE* queue)                                                          \
+    {                                                                                                    \
+        queue->queue_length = 0;                                                                         \
+        queue->first = NULL;                                                                             \
+        queue->last = NULL;                                                                              \
+    }                                                                                                    \
+    uint8_t is_queue_empty_##TYPE(queue_##TYPE* queue)                                                   \
+    {                                                                                                    \
+        return queue->queue_length == 0;                                                                 \
+    }                                                                                                    \
+    void push_to_queue_##TYPE(queue_##TYPE* queue, TYPE value)                                           \
+    {                                                                                                    \
+        if (queue->last == NULL) {                                                                       \
+            queue->first = (queue_##TYPE##_wrapper*)malloc(sizeof(queue_##TYPE##_wrapper));              \
+            queue->first->value = value;                                                                 \
+            queue->first->next_in_list = NULL;                                                           \
+            queue->first->prev_in_list = NULL;                                                           \
+                                                                                                         \
+            queue->last = queue->first;                                                                  \
+        } else {                                                                                         \
+            queue->last->next_in_list = (queue_##TYPE##_wrapper*)malloc(sizeof(queue_##TYPE##_wrapper)); \
+            queue->last->next_in_list->value = value;                                                    \
+            queue->last->next_in_list->next_in_list = NULL;                                              \
+            queue->last->next_in_list->prev_in_list = queue->last;                                       \
+                                                                                                         \
+            queue->last = queue->last->next_in_list;                                                     \
+        }                                                                                                \
+        queue->queue_length++;                                                                           \
+    }                                                                                                    \
+    void pop_queue_##TYPE(queue_##TYPE* queue)                                                           \
+    {                                                                                                    \
+        if (queue->queue_length == 0)                                                                    \
+            return;                                                                                      \
+                                                                                                         \
+        if (queue->queue_length == 1) {                                                                  \
+            free(queue->first);                                                                          \
+            queue->first = NULL;                                                                         \
+            queue->last = NULL;                                                                          \
+        } else {                                                                                         \
+            queue_##TYPE##_wrapper* to_delete = queue->last;                                             \
+            queue->last = queue->last->prev_in_list;                                                     \
+            queue->last->next_in_list = NULL;                                                            \
+            free(to_delete);                                                                             \
+        }                                                                                                \
+        queue->queue_length--;                                                                           \
+    }                                                                                                    \
+    void empty_queue_##TYPE(queue_##TYPE* queue)                                                         \
+    {                                                                                                    \
+        while (!is_queue_empty_##TYPE(queue))                                                            \
+            pop_queue_##TYPE(queue);                                                                     \
+    }
+
+#define HASHMAP_DECL(TYPE, TABLE_SIZE, hash_fct, eq_fct)                    \
+    QUEUE_DECL(TYPE);                                                       \
+    typedef struct hashmap_##TYPE {                                         \
+        queue_##TYPE table[TABLE_SIZE];                                     \
+    } hashmap_##TYPE;                                                       \
+                                                                            \
+    void init_hashmap_##TYPE(hashmap_##TYPE* hashmap)                       \
+    {                                                                       \
+        for (size_t i = 0; i < TABLE_SIZE; i++) {                           \
+            init_queue_##TYPE(&hashmap->table[i]);                          \
+        }                                                                   \
+    }                                                                       \
+                                                                            \
+    TYPE* get_value_ptr_##TYPE(hashmap_##TYPE* hashmap, TYPE key)           \
+    {                                                                       \
+        size_t hash_val = hash_fct(key) % TABLE_SIZE;                       \
+        queue_##TYPE##_wrapper* current_val = hashmap->table[hash_val].first; \
+        while (current_val != NULL && !eq_fct(current_val->value, key)) {   \
+            current_val = current_val->next_in_list;                        \
+        }                                                                   \
+        return &current_val->value;                                         \
+    }                                                                       \
+                                                                            \
+    void add_value_unique_key_##TYPE(hashmap_##TYPE* hashmap, TYPE value)   \
+    {                                                                       \
+        size_t hash_val = hash_fct(value) % TABLE_SIZE;                     \
+        if (get_value_ptr_##TYPE(hashmap, value) == NULL) {                 \
+            push_to_queue_##TYPE(&hashmap->table[hash_val], value);         \
+        }                                                                   \
+    }                                                                       \
+                                                                            \
+    void free_hashmap_##TYPE(hashmap_##TYPE* hashmap)                       \
+    {                                                                       \
+        for (size_t i = 0; i < TABLE_SIZE; i++) {                           \
+            empty_queue_##TYPE(&hashmap->table[i]);                         \
+        }                                                                   \
     }
 
 #endif
