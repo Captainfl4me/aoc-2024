@@ -49,6 +49,15 @@ int compare_uint32_t(const void* a, const void* b);
         }                                                                                       \
         return 0;                                                                               \
     }                                                                                           \
+    int index_of_##TYPE(list_##TYPE* list, TYPE value)                                          \
+    {                                                                                           \
+        for (size_t k = 0; k < list->length; k++) {                                             \
+            if (EQ_FCT(list->vector[k], value)) {                                               \
+                return k;                                                                       \
+            }                                                                                   \
+        }                                                                                       \
+        return -1;                                                                              \
+    }                                                                                           \
     void add_unique_to_list_##TYPE(list_##TYPE* list, TYPE value)                               \
     {                                                                                           \
         if (is_value_in_list_##TYPE(list, value)) {                                             \
@@ -131,6 +140,8 @@ typedef struct pos {
     int column;
 } pos;
 
+uint8_t pos_eq(pos a, pos b);
+
 typedef enum direction {
     up,
     right,
@@ -205,42 +216,42 @@ void apply_direction(pos* current_pos, direction dir);
             pop_queue_##TYPE(queue);                                                                     \
     }
 
-#define HASHMAP_DECL(TYPE, TABLE_SIZE, hash_fct, eq_fct)                    \
-    QUEUE_DECL(TYPE);                                                       \
-    typedef struct hashmap_##TYPE {                                         \
-        queue_##TYPE table[TABLE_SIZE];                                     \
-    } hashmap_##TYPE;                                                       \
-                                                                            \
-    void init_hashmap_##TYPE(hashmap_##TYPE* hashmap)                       \
-    {                                                                       \
-        for (size_t i = 0; i < TABLE_SIZE; i++) {                           \
-            init_queue_##TYPE(&hashmap->table[i]);                          \
-        }                                                                   \
-    }                                                                       \
-                                                                            \
-    TYPE* get_value_ptr_##TYPE(hashmap_##TYPE* hashmap, TYPE key)           \
-    {                                                                       \
-        size_t hash_val = hash_fct(key) % TABLE_SIZE;                       \
+#define HASHMAP_DECL(TYPE, TABLE_SIZE, hash_fct, eq_fct)                      \
+    QUEUE_DECL(TYPE);                                                         \
+    typedef struct hashmap_##TYPE {                                           \
+        queue_##TYPE table[TABLE_SIZE];                                       \
+    } hashmap_##TYPE;                                                         \
+                                                                              \
+    void init_hashmap_##TYPE(hashmap_##TYPE* hashmap)                         \
+    {                                                                         \
+        for (size_t i = 0; i < TABLE_SIZE; i++) {                             \
+            init_queue_##TYPE(&hashmap->table[i]);                            \
+        }                                                                     \
+    }                                                                         \
+                                                                              \
+    TYPE* get_value_ptr_##TYPE(hashmap_##TYPE* hashmap, TYPE key)             \
+    {                                                                         \
+        size_t hash_val = hash_fct(key) % TABLE_SIZE;                         \
         queue_##TYPE##_wrapper* current_val = hashmap->table[hash_val].first; \
-        while (current_val != NULL && !eq_fct(current_val->value, key)) {   \
-            current_val = current_val->next_in_list;                        \
-        }                                                                   \
-        return &current_val->value;                                         \
-    }                                                                       \
-                                                                            \
-    void add_value_unique_key_##TYPE(hashmap_##TYPE* hashmap, TYPE value)   \
-    {                                                                       \
-        size_t hash_val = hash_fct(value) % TABLE_SIZE;                     \
-        if (get_value_ptr_##TYPE(hashmap, value) == NULL) {                 \
-            push_to_queue_##TYPE(&hashmap->table[hash_val], value);         \
-        }                                                                   \
-    }                                                                       \
-                                                                            \
-    void free_hashmap_##TYPE(hashmap_##TYPE* hashmap)                       \
-    {                                                                       \
-        for (size_t i = 0; i < TABLE_SIZE; i++) {                           \
-            empty_queue_##TYPE(&hashmap->table[i]);                         \
-        }                                                                   \
+        while (current_val != NULL && !eq_fct(current_val->value, key)) {     \
+            current_val = current_val->next_in_list;                          \
+        }                                                                     \
+        return &current_val->value;                                           \
+    }                                                                         \
+                                                                              \
+    void add_value_unique_key_##TYPE(hashmap_##TYPE* hashmap, TYPE value)     \
+    {                                                                         \
+        size_t hash_val = hash_fct(value) % TABLE_SIZE;                       \
+        if (get_value_ptr_##TYPE(hashmap, value) == NULL) {                   \
+            push_to_queue_##TYPE(&hashmap->table[hash_val], value);           \
+        }                                                                     \
+    }                                                                         \
+                                                                              \
+    void free_hashmap_##TYPE(hashmap_##TYPE* hashmap)                         \
+    {                                                                         \
+        for (size_t i = 0; i < TABLE_SIZE; i++) {                             \
+            empty_queue_##TYPE(&hashmap->table[i]);                           \
+        }                                                                     \
     }
 
 #endif

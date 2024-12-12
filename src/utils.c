@@ -63,3 +63,7 @@ void apply_direction(pos* current_pos, direction dir)
         break;
     }
 }
+
+uint8_t pos_eq(pos a, pos b) {
+	return (a.line == b.line) && (a.column == b.column);
+}

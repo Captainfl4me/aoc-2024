@@ -16,7 +16,6 @@ new-day-%:
 	cp ./src/template.c ./src/day_$*.c
 	mkdir aoc-2024-inputs/day-$*/
 	touch aoc-2024-inputs/day-$*/input.txt
-	touch aoc-2024-inputs/day-$*/test.txt
 
 build-%: $(BUILD_DIR)/day_%
 	$(NOOP)
