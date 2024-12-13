@@ -16,3 +16,5 @@ Small list of interesting algorithm used:
 
 Algorithm|File|Small description
 --|--|--
+DFS|[day 12](./src/day_12.c)|DFS graph exploration
+Face counter|[day 12](./src/day_12.c)|Count face for a predefine region
