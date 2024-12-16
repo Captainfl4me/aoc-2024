@@ -50,7 +50,7 @@ uint64_t part_1(char* input, size_t strlen)
             safe_counter++;
         }
     }
-    free(string_vector);
+    free_string_table(string_vector, nb_line);
     return safe_counter;
 }
 
@@ -116,7 +116,7 @@ uint64_t part_2(char* input, size_t strlen)
             report_to_remove++;
         } while (is_safe != 1 && (size_t)report_to_remove < table_counter);
     }
-    free(string_vector);
+    free_string_table(string_vector, nb_line);
     return safe_counter;
 }
 

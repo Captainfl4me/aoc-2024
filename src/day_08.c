@@ -55,7 +55,7 @@ uint64_t part_1(char* input, size_t strlen)
         }
     }
     size_t nb_column = string_vector[0].length - 1;
-    free(string_vector);
+    free_string_table(string_vector, nb_line);
 
     uint64_t total_antinodes = 0;
     uint8_t antinode_map[nb_line][nb_column];
@@ -107,7 +107,7 @@ uint64_t part_2(char* input, size_t strlen)
         }
     }
     size_t nb_column = string_vector[0].length - 1;
-    free(string_vector);
+    free_string_table(string_vector, nb_line);
 
     uint8_t antinode_map[nb_line][nb_column];
     memset(antinode_map, 0, sizeof(uint8_t) * nb_line * nb_column);

@@ -41,6 +41,13 @@ string* split_by_lines(char* input, size_t strlen, size_t* vector_length)
     return string_vector;
 }
 
+void free_string_table(string* str_list, size_t vector_length) {
+	for (size_t i = 0; i < vector_length; i++) {
+		free(str_list[i].text);
+	}
+	free(str_list);
+}
+
 int compare_uint32_t(const void* a, const void* b)
 {
     return (*(uint32_t*)a - *(uint32_t*)b);

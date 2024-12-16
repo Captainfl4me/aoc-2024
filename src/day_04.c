@@ -41,6 +41,7 @@ uint64_t part_1(char* input, size_t strlen)
         }
     }
 
+    free_string_table(string_vector, nb_line);
     return find_word;
 }
 
@@ -66,6 +67,7 @@ uint64_t part_2(char* input, size_t strlen)
         }
     }
 
+    free_string_table(string_vector, nb_line);
     return find_word;
 }
 

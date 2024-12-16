@@ -68,7 +68,7 @@ uint64_t part_1(char* input, size_t strlen)
             pages_update[pages_relative_idx][update_idx++] = atoi(start_char);
         }
     }
-    free(string_vector);
+    free_string_table(string_vector, nb_line);
 
     uint32_t total_middle_page = 0;
     for (uint8_t update_idx = 0; update_idx < number_of_updates; update_idx++) {
@@ -138,7 +138,7 @@ uint64_t part_2(char* input, size_t strlen)
             pages_update[pages_relative_idx][update_idx++] = atoi(start_char);
         }
     }
-    free(string_vector);
+    free_string_table(string_vector, nb_line);
 
     uint32_t total_middle_page = 0;
     for (uint8_t update_idx = 0; update_idx < number_of_updates; update_idx++) {

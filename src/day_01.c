@@ -18,7 +18,7 @@ uint64_t part_1(char* input, size_t strlen)
         left_table[i] = atoi(string_vector[i].text);
         right_table[i] = atoi(first_space + 3);
     }
-    free(string_vector);
+    free_string_table(string_vector, nb_line);
 
     qsort(left_table, nb_line, sizeof(uint32_t), compare_uint32_t);
     qsort(right_table, nb_line, sizeof(uint32_t), compare_uint32_t);
@@ -45,7 +45,7 @@ uint64_t part_2(char* input, size_t strlen)
         left_table[i] = atoi(string_vector[i].text);
         right_table[i] = atoi(first_space + 3);
     }
-    free(string_vector);
+    free_string_table(string_vector, nb_line);
 
     uint32_t sum = 0;
     for (size_t i = 0; i < nb_line; i++) {
@@ -84,7 +84,7 @@ Test(aoc, split_by_line)
     cr_assert(eq(str, string_vector[3].text, "1   3"));
     cr_assert(eq(str, string_vector[4].text, "3   9"));
     cr_assert(eq(str, string_vector[5].text, "3   3"));
-    free(string_vector);
+    free_string_table(string_vector, nb_line);
 }
 
 Test(aoc, part_1)

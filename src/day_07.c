@@ -106,7 +106,7 @@ uint64_t part_1(char* input, size_t strlen)
         char* value_sep = first_sep + 2;
         parse_text_to_list_uint32_t(&eq_list[i].values, value_sep, ' ');
     }
-    free(string_vector);
+    free_string_table(string_vector, nb_line);
 
     uint64_t result_sum = 0;
     for (size_t i = 0; i < nb_line; i++) {
@@ -161,7 +161,7 @@ uint64_t part_2(char* input, size_t strlen)
         char* value_sep = first_sep + 2;
         parse_text_to_list_uint32_t(&eq_list[i].values, value_sep, ' ');
     }
-    free(string_vector);
+    free_string_table(string_vector, nb_line);
 
     uint64_t result_sum = 0;
     for (size_t i = 0; i < nb_line; i++) {
