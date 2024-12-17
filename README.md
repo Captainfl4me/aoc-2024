@@ -19,3 +19,4 @@ Algorithm|File|Small description
 DFS|[day 12](./src/day_12.c)|DFS graph exploration
 Face counter|[day 12](./src/day_12.c)|Count face for a predefine region
 Image Entropy|[day 14 part 2](./src/day_14.c)|Measure of entropy of an image to find what images are random noise.
+Dijkstra's algorithm|[day 16](./src/day_16.c)|Find min cost path in weighted graph.

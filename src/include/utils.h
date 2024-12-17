@@ -217,6 +217,80 @@ void apply_direction(pos* current_pos, direction dir);
             pop_queue_##TYPE(queue);                                                                     \
     }
 
+#define PRIORITY_QUEUE_DECL(TYPE, ORDER_FCT)                                                                                          \
+    typedef struct priority_queue_##TYPE##_wrapper {                                                                                  \
+        TYPE value;                                                                                                                   \
+        struct priority_queue_##TYPE##_wrapper* next_in_list;                                                                         \
+        struct priority_queue_##TYPE##_wrapper* prev_in_list;                                                                         \
+    } priority_queue_##TYPE##_wrapper;                                                                                                \
+    typedef struct priority_queue_##TYPE {                                                                                            \
+        size_t priority_queue_length;                                                                                                 \
+        priority_queue_##TYPE##_wrapper* first;                                                                                       \
+        priority_queue_##TYPE##_wrapper* last;                                                                                        \
+    } priority_queue_##TYPE;                                                                                                          \
+                                                                                                                                      \
+    void init_priority_queue_##TYPE(priority_queue_##TYPE* priority_queue)                                                            \
+    {                                                                                                                                 \
+        priority_queue->priority_queue_length = 0;                                                                                    \
+        priority_queue->first = NULL;                                                                                                 \
+        priority_queue->last = NULL;                                                                                                  \
+    }                                                                                                                                 \
+    uint8_t is_priority_queue_empty_##TYPE(priority_queue_##TYPE* priority_queue)                                                     \
+    {                                                                                                                                 \
+        return priority_queue->priority_queue_length == 0;                                                                            \
+    }                                                                                                                                 \
+    void push_to_priority_queue_##TYPE(priority_queue_##TYPE* priority_queue, TYPE value)                                             \
+    {                                                                                                                                 \
+        priority_queue_##TYPE##_wrapper* node = priority_queue->last;                                                                 \
+        while (node != NULL && ORDER_FCT(node->value, value)) {                                                                       \
+            node = node->prev_in_list;                                                                                                \
+        }                                                                                                                             \
+        priority_queue_##TYPE##_wrapper* new_val = (priority_queue_##TYPE##_wrapper*)malloc(sizeof(priority_queue_##TYPE##_wrapper)); \
+        new_val->value = value;                                                                                                       \
+        new_val->prev_in_list = node;                                                                                                 \
+        if (node == NULL) {                                                                                                           \
+            if (priority_queue->first != NULL) {                                                                                      \
+                priority_queue->first->prev_in_list = new_val;                                                                        \
+            }                                                                                                                         \
+            new_val->next_in_list = priority_queue->first;                                                                            \
+            priority_queue->first = new_val;                                                                                          \
+        } else {                                                                                                                      \
+            priority_queue_##TYPE##_wrapper* temp = node->next_in_list;                                                               \
+            node->next_in_list = new_val;                                                                                             \
+            if (temp != NULL) {                                                                                                       \
+                temp->prev_in_list = new_val;                                                                                         \
+            }                                                                                                                         \
+            new_val->next_in_list = temp;                                                                                             \
+            new_val->prev_in_list = node;                                                                                             \
+        }                                                                                                                             \
+        if (new_val->next_in_list == NULL) {                                                                                          \
+            priority_queue->last = new_val;                                                                                           \
+        }                                                                                                                             \
+        priority_queue->priority_queue_length++;                                                                                      \
+    }                                                                                                                                 \
+    void pop_priority_queue_##TYPE(priority_queue_##TYPE* priority_queue)                                                             \
+    {                                                                                                                                 \
+        if (priority_queue->priority_queue_length == 0)                                                                               \
+            return;                                                                                                                   \
+                                                                                                                                      \
+        if (priority_queue->priority_queue_length == 1) {                                                                             \
+            free(priority_queue->first);                                                                                              \
+            priority_queue->first = NULL;                                                                                             \
+            priority_queue->last = NULL;                                                                                              \
+        } else {                                                                                                                      \
+            priority_queue_##TYPE##_wrapper* to_delete = priority_queue->last;                                                        \
+            priority_queue->last = priority_queue->last->prev_in_list;                                                                \
+            priority_queue->last->next_in_list = NULL;                                                                                \
+            free(to_delete);                                                                                                          \
+        }                                                                                                                             \
+        priority_queue->priority_queue_length--;                                                                                      \
+    }                                                                                                                                 \
+    void empty_priority_queue_##TYPE(priority_queue_##TYPE* priority_queue)                                                           \
+    {                                                                                                                                 \
+        while (!is_priority_queue_empty_##TYPE(priority_queue))                                                                       \
+            pop_priority_queue_##TYPE(priority_queue);                                                                                \
+    }
+
 #define HASHMAP_DECL(TYPE, TABLE_SIZE, hash_fct, eq_fct)                      \
     QUEUE_DECL(TYPE);                                                         \
     typedef struct hashmap_##TYPE {                                           \
