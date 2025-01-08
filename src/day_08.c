@@ -31,7 +31,7 @@ int find_type_index(list_list_antenna* list, char type)
     return -1;
 }
 
-uint64_t part_1(char* input, size_t strlen)
+char* part_1(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -80,10 +80,10 @@ uint64_t part_1(char* input, size_t strlen)
         }
     }
 
-    return total_antinodes;
+    return uint64_t_to_str(total_antinodes);
 }
 
-uint64_t part_2(char* input, size_t strlen)
+char* part_2(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -138,7 +138,7 @@ uint64_t part_2(char* input, size_t strlen)
         }
     }
 
-    return total_antinodes;
+    return uint64_t_to_str(total_antinodes);
 }
 
 #ifdef TEST
@@ -148,15 +148,15 @@ uint64_t part_2(char* input, size_t strlen)
 Test(aoc, part_1)
 {
     char test_input[] = "............\n........0...\n.....0......\n.......0....\n....0.......\n......A.....\n............\n............\n........A...\n.........A..\n............\n............\n";
-    cr_assert(eq(int, part_1(test_input, sizeof(test_input)), 14));
+    cr_assert(eq(str, part_1(test_input, sizeof(test_input)), "14"));
 }
 
 Test(aoc, part_2)
 {
     char test_input_1[] = "T.........\n...T......\n.T........\n.........#\n..........\n..........\n..........\n..........\n..........\n..........\n";
-    cr_assert(eq(int, part_2(test_input_1, sizeof(test_input_1)), 9));
+    cr_assert(eq(str, part_2(test_input_1, sizeof(test_input_1)), "9"));
 
     char test_input_2[] = "............\n........0...\n.....0......\n.......0....\n....0.......\n......A.....\n............\n............\n........A...\n.........A..\n............\n............\n";
-    cr_assert(eq(int, part_2(test_input_2, sizeof(test_input_2)), 34));
+    cr_assert(eq(str, part_2(test_input_2, sizeof(test_input_2)), "34"));
 }
 #endif

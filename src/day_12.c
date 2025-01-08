@@ -4,7 +4,7 @@
 
 QUEUE_DECL(pos);
 
-uint64_t part_1(char* input, size_t strlen)
+char* part_1(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -57,7 +57,7 @@ uint64_t part_1(char* input, size_t strlen)
     }
 
     free_string_table(string_vector, nb_line);
-    return total_cost;
+    return uint64_t_to_str(total_cost);
 }
 
 LIST_DECL(pos, 5, pos_eq);
@@ -68,7 +68,7 @@ uint8_t size_t_eq(size_t a, size_t b)
 }
 LIST_DECL(size_t, 5, size_t_eq);
 
-uint64_t part_2(char* input, size_t strlen)
+char* part_2(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -163,7 +163,7 @@ uint64_t part_2(char* input, size_t strlen)
     }
 
     free_string_table(string_vector, nb_line);
-    return total_cost;
+    return uint64_t_to_str(total_cost);
 }
 
 #ifdef TEST
@@ -173,36 +173,36 @@ uint64_t part_2(char* input, size_t strlen)
 Test(aoc, part_1)
 {
     char test_input_1[] = "AAAA\nBBCD\nBBCC\nEEEC\n";
-    cr_assert(eq(int, part_1(test_input_1, sizeof(test_input_1)), 140));
+    cr_assert(eq(str, part_1(test_input_1, sizeof(test_input_1)), "140"));
 
     char test_input_2[] = "OOOOO\nOXOXO\nOOOOO\nOXOXO\nOOOOO\n";
-    cr_assert(eq(int, part_1(test_input_2, sizeof(test_input_2)), 772));
+    cr_assert(eq(str, part_1(test_input_2, sizeof(test_input_2)), "772"));
 
     char test_input_3[] = "RRRRIICCFF\nRRRRIICCCF\nVVRRRCCFFF\nVVRCCCJFFF\nVVVVCJJCFE\nVVIVCCJJEE\nVVIIICJJEE\nMIIIIIJJEE\nMIIISIJEEE\nMMMISSJEEE\n";
-    cr_assert(eq(int, part_1(test_input_3, sizeof(test_input_3)), 1930));
+    cr_assert(eq(str, part_1(test_input_3, sizeof(test_input_3)), "1930"));
 }
 
 Test(aoc, part_2)
 {
     char test_input_1[] = "AAAA\nBBCD\nBBCC\nEEEC\n";
-    cr_assert(eq(int, part_2(test_input_1, sizeof(test_input_1)), 80));
+    cr_assert(eq(str, part_2(test_input_1, sizeof(test_input_1)), "80"));
 
     char test_input_2[] = "OOOOO\nOXOXO\nOOOOO\nOXOXO\nOOOOO\n";
-    cr_assert(eq(int, part_2(test_input_2, sizeof(test_input_2)), 436));
+    cr_assert(eq(str, part_2(test_input_2, sizeof(test_input_2)), "436"));
 
     char test_input_3[] = "AAAAAA\nAAABBA\nAAABBA\nABBAAA\nABBAAA\nAAAAAA\n";
-    cr_assert(eq(int, part_2(test_input_3, sizeof(test_input_3)), 368));
+    cr_assert(eq(str, part_2(test_input_3, sizeof(test_input_3)), "368"));
 
     char test_input_4[] = "EEEEE\nEXXXX\nEEEEE\nEXXXX\nEEEEE\n";
-    cr_assert(eq(int, part_2(test_input_4, sizeof(test_input_4)), 236));
+    cr_assert(eq(str, part_2(test_input_4, sizeof(test_input_4)), "236"));
 
     char test_input_5[] = "RRRRIICCFF\nRRRRIICCCF\nVVRRRCCFFF\nVVRCCCJFFF\nVVVVCJJCFE\nVVIVCCJJEE\nVVIIICJJEE\nMIIIIIJJEE\nMIIISIJEEE\nMMMISSJEEE\n";
-    cr_assert(eq(int, part_2(test_input_5, sizeof(test_input_5)), 1206));
+    cr_assert(eq(str, part_2(test_input_5, sizeof(test_input_5)), "1206"));
 
     char test_input_6[] = "WWWW\nWLLW\nWWWW\n";
-    cr_assert(eq(int, part_2(test_input_6, sizeof(test_input_6)), 88));
+    cr_assert(eq(str, part_2(test_input_6, sizeof(test_input_6)), "88"));
 
     char test_input_7[] = "WWW\nWLW\nWLW\nWWW\n";
-    cr_assert(eq(int, part_2(test_input_7, sizeof(test_input_7)), 88));
+    cr_assert(eq(str, part_2(test_input_7, sizeof(test_input_7)), "88"));
 }
 #endif

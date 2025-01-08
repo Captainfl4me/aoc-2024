@@ -1,6 +1,15 @@
 #include "include/utils.h"
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
+
+char* uint64_t_to_str(uint64_t a) {
+	char* text = NULL;
+	size_t text_len = snprintf(NULL, 0, "%lu", a);
+	text = (char*)malloc(sizeof(char)*text_len);
+	snprintf(text, text_len+1, "%lu", a);
+	return text;
+}
 
 size_t get_number_of_line(char* input, size_t strlen)
 {

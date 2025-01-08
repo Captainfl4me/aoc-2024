@@ -55,15 +55,16 @@ int main(int argc, char** argv)
             input_text[read_length++] = '\0';
 
             uint64_t start_time = nanos();
-            uint64_t result = part_1(input_text, read_length);
+            char* result = part_1(input_text, read_length);
             uint64_t end_time = nanos();
-            printf("[part_1] result = %lu\r\n", result);
+            printf("[part_1] result = %s\r\n", result);
             printf("[part_1] time = %lu us\r\n\n", (end_time - start_time) / 1000);
 
+            free(result);
             start_time = nanos();
             result = part_2(input_text, read_length);
             end_time = nanos();
-            printf("[part_2] result = %lu\r\n", result);
+            printf("[part_2] result = %s\r\n", result);
             printf("[part_2] time = %lu us\r\n", (end_time - start_time) / 1000);
 
             fclose(fptr);

@@ -8,7 +8,7 @@ typedef enum case_type {
     Box,
 } case_type;
 
-uint64_t part_1(char* input, size_t strlen)
+char* part_1(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -92,7 +92,7 @@ uint64_t part_1(char* input, size_t strlen)
         }
     }
 
-    return box_gps_sum;
+    return uint64_t_to_str(box_gps_sum);
 }
 
 QUEUE_DECL(pos);
@@ -106,7 +106,7 @@ uint8_t pos_val_eq(pos_val a, pos_val b)
 }
 LIST_DECL(pos_val, 5, pos_val_eq);
 
-uint64_t part_2(char* input, size_t strlen)
+char* part_2(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -254,7 +254,7 @@ uint64_t part_2(char* input, size_t strlen)
         }
     }
 
-    return box_gps_sum;
+    return uint64_t_to_str(box_gps_sum);
 }
 
 #ifdef TEST
@@ -264,21 +264,21 @@ uint64_t part_2(char* input, size_t strlen)
 Test(aoc, part_1)
 {
     char test_input_1[] = "########\n#..O.O.#\n##@.O..#\n#...O..#\n#.#.O..#\n#...O..#\n#......#\n########\n\n<^^>>>vv<v>>v<<\n";
-    cr_assert(eq(int, part_1(test_input_1, sizeof(test_input_1)), 2028));
+    cr_assert(eq(str, part_1(test_input_1, sizeof(test_input_1)), "2028"));
 
     char test_input_2[] = "########\n#..O.O.#\n##@.O..#\n#...O..#\n#.#.O..#\n#...O..#\n#......#\n########\n\n<^^>>>vv\n<v>>v<<<\n";
-    cr_assert(eq(int, part_1(test_input_2, sizeof(test_input_2)), 2028));
+    cr_assert(eq(str, part_1(test_input_2, sizeof(test_input_2)), "2028"));
 
     char test_input_3[] = "##########\n#..O..O.O#\n#......O.#\n#.OO..O.O#\n#..O@..O.#\n#O#..O...#\n#O..O..O.#\n#.OO.O.OO#\n#....O...#\n##########\n\n<vv>^<v^>v>^vv^v>v<>v^v<v<^vv<<<^><<><>>v<vvv<>^v^>^<<<><<v<<<v^vv^v>^\nvvv<<^>^v^^><<>>><>^<<><^vv^^<>vvv<>><^^v>^>vv<>v<<<<v<^v>^<^^>>>^<v<v\n><>vv>v^v^<>><>>>><^^>vv>v<^^^>>v^v^<^^>v^^>v^<^v>v<>>v^v^<v>v^^<^^vv<\n<<v<^>>^^^^>>>v^<>vvv^><v<<<>^^^vv^<vvv>^>v<^^^^v<>^>vvvv><>>v^<<^^^^^\n^><^><>>><>^^<<^^v>>><^<v>^<vv>>v>>>^v><>^v><<<<v>>v<v<v>vvv>^<><<>^><\n^>><>^v<><^vvv<^^<><v<<<<<><^v<<<><<<^^<v<^^^><^>>^<v^><<<^>>^v<v^v<v^\n>^>>^v>vv>^<<^v<>><<><<v<<v><>v<^vv<<<>^^v^>^^>>><<^v>>v^v><^^>>^<>vv^\n<><^^>^^^<><vvvvv^v<v<<>^v<v>v<<^><<><<><<<^^<<<^<<>><<><^^^>^^<>^>v<>\n^^>vv<^v^v<vv>^<><v<^v>^^^>>>^^vvv^>vvv<>>>^<^>>>>>^<<^v>^vvv<>^<><<v>\nv^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^\n";
-    cr_assert(eq(int, part_1(test_input_3, sizeof(test_input_3)), 10092));
+    cr_assert(eq(str, part_1(test_input_3, sizeof(test_input_3)), "10092"));
 }
 
 Test(aoc, part_2)
 {
     char test_input_1[] = "#######\n#...#.#\n#.....#\n#..OO@#\n#..O..#\n#.....#\n#######\n\n<vv<<^^<<^^\n";
-    cr_assert(eq(int, part_2(test_input_1, sizeof(test_input_1)), 618));
+    cr_assert(eq(str, part_2(test_input_1, sizeof(test_input_1)), "618"));
 
     char test_input_2[] = "##########\n#..O..O.O#\n#......O.#\n#.OO..O.O#\n#..O@..O.#\n#O#..O...#\n#O..O..O.#\n#.OO.O.OO#\n#....O...#\n##########\n\n<vv>^<v^>v>^vv^v>v<>v^v<v<^vv<<<^><<><>>v<vvv<>^v^>^<<<><<v<<<v^vv^v>^\nvvv<<^>^v^^><<>>><>^<<><^vv^^<>vvv<>><^^v>^>vv<>v<<<<v<^v>^<^^>>>^<v<v\n><>vv>v^v^<>><>>>><^^>vv>v<^^^>>v^v^<^^>v^^>v^<^v>v<>>v^v^<v>v^^<^^vv<\n<<v<^>>^^^^>>>v^<>vvv^><v<<<>^^^vv^<vvv>^>v<^^^^v<>^>vvvv><>>v^<<^^^^^\n^><^><>>><>^^<<^^v>>><^<v>^<vv>>v>>>^v><>^v><<<<v>>v<v<v>vvv>^<><<>^><\n^>><>^v<><^vvv<^^<><v<<<<<><^v<<<><<<^^<v<^^^><^>>^<v^><<<^>>^v<v^v<v^\n>^>>^v>vv>^<<^v<>><<><<v<<v><>v<^vv<<<>^^v^>^^>>><<^v>>v^v><^^>>^<>vv^\n<><^^>^^^<><vvvvv^v<v<<>^v<v>v<<^><<><<><<<^^<<<^<<>><<><^^^>^^<>^>v<>\n^^>vv<^v^v<vv>^<><v<^v>^^^>>>^^vvv^>vvv<>>>^<^>>>>>^<<^v>^vvv<>^<><<v>\nv^^>>><<^^<>>^v^<v^vv<>v^<<>^<^v^v><^<<<><<^<v><v<>vv>>v><v^<vv<>v^<<^\n";
-    cr_assert(eq(int, part_2(test_input_2, sizeof(test_input_2)), 9021));
+    cr_assert(eq(str, part_2(test_input_2, sizeof(test_input_2)), "9021"));
 }
 #endif

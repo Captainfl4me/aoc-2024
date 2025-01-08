@@ -21,7 +21,7 @@ void apply_direction_to_coord(size_t* pos_line, size_t* pos_column, direction di
     }
 }
 
-uint64_t part_1(char* input, size_t strlen)
+char* part_1(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -66,13 +66,13 @@ uint64_t part_1(char* input, size_t strlen)
 
     free_string_table(string_vector, nb_line);
 
-    return total_visited;
+    return uint64_t_to_str(total_visited);
 }
 
 BUILT_IN_CMP(uint8_t);
 LIST_DECL(uint8_t, 5, cmp_uint8_t);
 
-uint64_t part_2(char* input, size_t strlen)
+char* part_2(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -182,7 +182,7 @@ uint64_t part_2(char* input, size_t strlen)
 
     free_string_table(string_vector, nb_line);
 
-    return total_positions;
+    return uint64_t_to_str(total_positions);
 }
 
 #ifdef TEST
@@ -192,18 +192,18 @@ uint64_t part_2(char* input, size_t strlen)
 Test(aoc, part_1)
 {
     char test_input[] = "....#.....\n.........#\n..........\n..#.......\n.......#..\n..........\n.#..^.....\n........#.\n#.........\n......#...\n";
-    cr_assert(eq(int, part_1(test_input, sizeof(test_input)), 41));
+    cr_assert(eq(str, part_1(test_input, sizeof(test_input)), "41"));
 }
 
 Test(aoc, part_2)
 {
     char test_input[] = "....#.....\n.........#\n..........\n..#.......\n.......#..\n..........\n.#..^.....\n........#.\n#.........\n......#...\n";
-    cr_assert(eq(int, part_2(test_input, sizeof(test_input)), 6));
+    cr_assert(eq(str, part_2(test_input, sizeof(test_input)), "6"));
 }
 
 Test(aoc, part_1_opt)
 {
     char test_input[] = ".#................\n..#...............\n..................\n.^................\n..................\n";
-    cr_assert(eq(int, part_1(test_input, sizeof(test_input)), 4));
+    cr_assert(eq(str, part_1(test_input, sizeof(test_input)), "4"));
 }
 #endif

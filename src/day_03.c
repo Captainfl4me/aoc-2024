@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
-uint64_t part_1(char* input, size_t strlen)
+char* part_1(char* input, size_t strlen)
 {
     UNUSED(strlen);
     regex_t mul_regex;
@@ -39,10 +39,10 @@ uint64_t part_1(char* input, size_t strlen)
     } while (function_result != REG_NOMATCH);
 
     regfree(&mul_regex);
-    return result;
+    return uint64_t_to_str(result);
 }
 
-uint64_t part_2(char* input, size_t strlen)
+char* part_2(char* input, size_t strlen)
 {
     UNUSED(strlen);
     regex_t mul_regex, do_regex, dont_regex;
@@ -102,7 +102,7 @@ uint64_t part_2(char* input, size_t strlen)
     } while (function_result != REG_NOMATCH);
 
     regfree(&mul_regex);
-    return result;
+    return uint64_t_to_str(result);
 }
 
 #ifdef TEST
@@ -112,12 +112,12 @@ uint64_t part_2(char* input, size_t strlen)
 Test(aoc, part_1)
 {
     char test_input[] = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))";
-    cr_assert(eq(int, part_1(test_input, sizeof(test_input)), 161));
+    cr_assert(eq(str, part_1(test_input, sizeof(test_input)), "161"));
 }
 
 Test(aoc, part_2)
 {
     char test_input[] = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))";
-    cr_assert(eq(int, part_2(test_input, sizeof(test_input)), 48));
+    cr_assert(eq(str, part_2(test_input, sizeof(test_input)), "48"));
 }
 #endif

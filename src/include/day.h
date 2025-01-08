@@ -3,6 +3,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-uint64_t part_1(char* input, size_t strlen);
-uint64_t part_2(char* input, size_t strlen);
+char* part_1(char* input, size_t strlen);
+char* part_2(char* input, size_t strlen);
 #endif

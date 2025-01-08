@@ -13,6 +13,7 @@ typedef struct string {
     size_t length;
 } string;
 
+char* uint64_t_to_str(uint64_t a);
 size_t get_number_of_line(char* input, size_t strlen);
 string* split_by_lines(char* input, size_t strlen, size_t* vector_length);
 void free_string_table(string* str_list, size_t vector_length);

@@ -2,7 +2,7 @@
 #include "include/utils.h"
 #include <string.h>
 
-uint64_t part_1(char* input, size_t strlen)
+char* part_1(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -42,10 +42,10 @@ uint64_t part_1(char* input, size_t strlen)
     }
 
     free_string_table(string_vector, nb_line);
-    return find_word;
+    return uint64_t_to_str(find_word);
 }
 
-uint64_t part_2(char* input, size_t strlen)
+char* part_2(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -68,7 +68,7 @@ uint64_t part_2(char* input, size_t strlen)
     }
 
     free_string_table(string_vector, nb_line);
-    return find_word;
+    return uint64_t_to_str(find_word);
 }
 
 #ifdef TEST
@@ -78,12 +78,12 @@ uint64_t part_2(char* input, size_t strlen)
 Test(aoc, part_1)
 {
     char test_input[] = "MMMSXXMASM\nMSAMXMSMSA\nAMXSXMAAMM\nMSAMASMSMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX\n";
-    cr_assert(eq(int, part_1(test_input, sizeof(test_input)), 18));
+    cr_assert(eq(str, part_1(test_input, sizeof(test_input)), "18"));
 }
 
 Test(aoc, part_2)
 {
     char test_input[] = "MMMSXXMASM\nMSAMXMSMSA\nAMXSXMAAMM\nMSAMASMSMX\nXMASAMXAMM\nXXAMMXXAMA\nSMSMSASXSS\nSAXAMASAAA\nMAMMMXMMMM\nMXMXAXMASX\n";
-    cr_assert(eq(int, part_2(test_input, sizeof(test_input)), 9));
+    cr_assert(eq(str, part_2(test_input, sizeof(test_input)), "9"));
 }
 #endif

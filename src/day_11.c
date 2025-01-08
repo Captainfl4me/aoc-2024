@@ -38,7 +38,7 @@ uint64_t int_pow(uint64_t num, size_t pow)
     return res;
 }
 
-uint64_t part_1(char* input, size_t strlen)
+char* part_1(char* input, size_t strlen)
 {
     char* cp_input = (char*)malloc(sizeof(char) * (strlen + 1));
     strcpy(cp_input, input);
@@ -105,10 +105,10 @@ uint64_t part_1(char* input, size_t strlen)
         }
     }
 
-    return total_stones;
+    return uint64_t_to_str(total_stones);
 }
 
-uint64_t part_2(char* input, size_t strlen)
+char* part_2(char* input, size_t strlen)
 {
     char* cp_input = (char*)malloc(sizeof(char) * (strlen + 1));
     strcpy(cp_input, input);
@@ -176,7 +176,7 @@ uint64_t part_2(char* input, size_t strlen)
         }
     }
 
-    return total_stones;
+    return uint64_t_to_str(total_stones);
 }
 
 #ifdef TEST
@@ -186,15 +186,15 @@ uint64_t part_2(char* input, size_t strlen)
 Test(aoc, part_1)
 {
     char test_input_1[] = "125 17\n";
-    cr_assert(eq(int, part_1(test_input_1, sizeof(test_input_1)), 55312));
+    cr_assert(eq(str, part_1(test_input_1, sizeof(test_input_1)), "55312"));
 }
 
 Test(aoc, part_2)
 {
     char test_input_1[] = "125 17\n";
-    cr_assert(eq(ulong, part_2(test_input_1, sizeof(test_input_1)), 65601038650482));
+    cr_assert(eq(str, part_2(test_input_1, sizeof(test_input_1)), "65601038650482"));
 
     char test_input_2[] = "0\n";
-    cr_assert(eq(ulong, part_2(test_input_2, sizeof(test_input_2)), 22938365706844));
+    cr_assert(eq(str, part_2(test_input_2, sizeof(test_input_2)), "22938365706844"));
 }
 #endif

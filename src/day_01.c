@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-uint64_t part_1(char* input, size_t strlen)
+char* part_1(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -28,10 +28,10 @@ uint64_t part_1(char* input, size_t strlen)
         sum += abs((int32_t)left_table[i] - (int32_t)right_table[i]);
     }
 
-    return sum;
+    return uint64_t_to_str(sum);
 }
 
-uint64_t part_2(char* input, size_t strlen)
+char* part_2(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -58,7 +58,7 @@ uint64_t part_2(char* input, size_t strlen)
         sum += left_table[i] * counter;
     }
 
-    return sum;
+    return uint64_t_to_str(sum);
 }
 
 #ifdef TEST
@@ -90,12 +90,12 @@ Test(aoc, split_by_line)
 Test(aoc, part_1)
 {
     char test_input[37] = "3   4\n4   3\n2   5\n1   3\n3   9\n3   3\n";
-    cr_assert(eq(int, part_1(test_input, 37), 11));
+    cr_assert(eq(str, part_1(test_input, 37), "11"));
 }
 
 Test(aoc, part_2)
 {
     char test_input[37] = "3   4\n4   3\n2   5\n1   3\n3   9\n3   3\n";
-    cr_assert(eq(int, part_2(test_input, 37), 31));
+    cr_assert(eq(str, part_2(test_input, 37), "31"));
 }
 #endif

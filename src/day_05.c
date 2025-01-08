@@ -9,7 +9,7 @@ LIST_DECL(uint8_t, 5, cmp_uint8_t);
 
 uint8_t valid_update_middle_page(uint8_t* update_pages_list, uint8_t update_pages_list_length, list_uint8_t reverse_page_order[99]);
 
-uint64_t part_1(char* input, size_t strlen)
+char* part_1(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -76,10 +76,10 @@ uint64_t part_1(char* input, size_t strlen)
         free(pages_update[update_idx]);
     }
     free(pages_update);
-    return total_middle_page;
+    return uint64_t_to_str(total_middle_page);
 }
 
-uint64_t part_2(char* input, size_t strlen)
+char* part_2(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -162,7 +162,7 @@ uint64_t part_2(char* input, size_t strlen)
         free(pages_update[update_idx]);
     }
     free(pages_update);
-    return total_middle_page;
+    return uint64_t_to_str(total_middle_page);
 }
 
 uint8_t valid_update_middle_page(uint8_t* update_pages_list, uint8_t update_pages_list_length, list_uint8_t reverse_page_order[99])
@@ -198,12 +198,12 @@ uint8_t valid_update_middle_page(uint8_t* update_pages_list, uint8_t update_page
 Test(aoc, part_1)
 {
     char test_input[] = "47|53\n97|13\n97|61\n97|47\n75|29\n61|13\n75|53\n29|13\n97|29\n53|29\n61|53\n97|53\n61|29\n47|13\n75|47\n97|75\n47|61\n75|61\n47|29\n75|13\n53|13\n\n75,47,61,53,29\n97,61,53,29,13\n75,29,13\n75,97,47,61,53\n61,13,29\n97,13,75,29,47\n";
-    cr_assert(eq(int, part_1(test_input, sizeof(test_input)), 143));
+    cr_assert(eq(str, part_1(test_input, sizeof(test_input)), "143"));
 }
 
 Test(aoc, part_2)
 {
     char test_input[] = "47|53\n97|13\n97|61\n97|47\n75|29\n61|13\n75|53\n29|13\n97|29\n53|29\n61|53\n97|53\n61|29\n47|13\n75|47\n97|75\n47|61\n75|61\n47|29\n75|13\n53|13\n\n75,47,61,53,29\n97,61,53,29,13\n75,29,13\n75,97,47,61,53\n61,13,29\n97,13,75,29,47\n";
-    cr_assert(eq(int, part_2(test_input, sizeof(test_input)), 123));
+    cr_assert(eq(str, part_2(test_input, sizeof(test_input)), "123"));
 }
 #endif

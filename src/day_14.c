@@ -16,7 +16,7 @@ typedef struct pos_vel {
     pos vel;
 } pos_vel;
 
-uint64_t part_1(char* input, size_t strlen)
+char* part_1(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -66,10 +66,10 @@ uint64_t part_1(char* input, size_t strlen)
         safety_factor *= quartile_number[i];
     }
 
-    return safety_factor;
+    return uint64_t_to_str(safety_factor);
 }
 
-uint64_t part_2(char* input, size_t strlen)
+char* part_2(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -130,7 +130,7 @@ uint64_t part_2(char* input, size_t strlen)
         }
     }
 
-    return step_k + 1;
+    return uint64_t_to_str(step_k + 1);
 }
 
 #ifdef TEST
@@ -140,6 +140,6 @@ uint64_t part_2(char* input, size_t strlen)
 Test(aoc, part_1)
 {
     char test_input_1[] = "p=0,4 v=3,-3\np=6,3 v=-1,-3\np=10,3 v=-1,2\np=2,0 v=2,-1\np=0,0 v=1,3\np=3,0 v=-2,-2\np=7,6 v=-1,-3\np=3,0 v=-1,-2\np=9,3 v=2,3\np=7,3 v=-1,2\np=2,4 v=2,-3\np=9,5 v=-3,-3\n";
-    cr_assert(eq(int, part_1(test_input_1, sizeof(test_input_1)), 12));
+    cr_assert(eq(str, part_1(test_input_1, sizeof(test_input_1)), "12"));
 }
 #endif

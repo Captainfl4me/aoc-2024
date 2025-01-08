@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-uint64_t part_1(char* input, size_t strlen)
+char* part_1(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -51,10 +51,10 @@ uint64_t part_1(char* input, size_t strlen)
         }
     }
     free_string_table(string_vector, nb_line);
-    return safe_counter;
+    return uint64_t_to_str(safe_counter);
 }
 
-uint64_t part_2(char* input, size_t strlen)
+char* part_2(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -117,7 +117,7 @@ uint64_t part_2(char* input, size_t strlen)
         } while (is_safe != 1 && (size_t)report_to_remove < table_counter);
     }
     free_string_table(string_vector, nb_line);
-    return safe_counter;
+    return uint64_t_to_str(safe_counter);
 }
 
 #ifdef TEST
@@ -127,12 +127,12 @@ uint64_t part_2(char* input, size_t strlen)
 Test(aoc, part_1)
 {
     char test_input[60] = "7 6 4 2 1\n1 2 7 8 9\n9 7 6 2 1\n1 3 2 4 5\n8 6 4 4 1\n1 3 6 7 9\n";
-    cr_assert(eq(int, part_1(test_input, 60), 2));
+    cr_assert(eq(str, part_1(test_input, 60), "2"));
 }
 
 Test(aoc, part_2)
 {
     char test_input[60] = "7 6 4 2 1\n1 2 7 8 9\n9 7 6 2 1\n1 3 2 4 5\n8 6 4 4 1\n1 3 6 7 9\n";
-    cr_assert(eq(int, part_2(test_input, 60), 4));
+    cr_assert(eq(str, part_2(test_input, 60), "4"));
 }
 #endif

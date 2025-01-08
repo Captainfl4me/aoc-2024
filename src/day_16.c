@@ -14,7 +14,7 @@ uint8_t order_state(state a, state b)
 }
 PRIORITY_QUEUE_DECL(state, order_state);
 
-uint64_t part_1(char* input, size_t strlen)
+char* part_1(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -73,7 +73,7 @@ uint64_t part_1(char* input, size_t strlen)
         }
     }
 
-    return min_path_cost;
+    return uint64_t_to_str(min_path_cost);
 }
 
 typedef struct state_with_history {
@@ -94,7 +94,7 @@ uint8_t state_with_history_eq(state_with_history a, state_with_history b)
 }
 LIST_DECL(state_with_history, 5, state_with_history_eq);
 
-uint64_t part_2(char* input, size_t strlen)
+char* part_2(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -186,7 +186,7 @@ uint64_t part_2(char* input, size_t strlen)
         total_sits += sits_map[k];
     }
 
-    return total_sits;
+    return uint64_t_to_str(total_sits);
 }
 
 #ifdef TEST
@@ -196,18 +196,18 @@ uint64_t part_2(char* input, size_t strlen)
 Test(aoc, part_1)
 {
     char test_input_1[] = "###############\n#.......#....E#\n#.#.###.#.###.#\n#.....#.#...#.#\n#.###.#####.#.#\n#.#.#.......#.#\n#.#.#####.###.#\n#...........#.#\n###.#.#####.#.#\n#...#.....#.#.#\n#.#.#.###.#.#.#\n#.....#...#.#.#\n#.###.#.#.#.#.#\n#S..#.....#...#\n###############\n";
-    cr_assert(eq(ulong, part_1(test_input_1, sizeof(test_input_1)), 7036));
+    cr_assert(eq(str, part_1(test_input_1, sizeof(test_input_1)), "7036"));
 
     char test_input_2[] = "#################\n#...#...#...#..E#\n#.#.#.#.#.#.#.#.#\n#.#.#.#...#...#.#\n#.#.#.#.###.#.#.#\n#...#.#.#.....#.#\n#.#.#.#.#.#####.#\n#.#...#.#.#.....#\n#.#.#####.#.###.#\n#.#.#.......#...#\n#.#.###.#####.###\n#.#.#...#.....#.#\n#.#.#.#####.###.#\n#.#.#.........#.#\n#.#.#.#########.#\n#S#.............#\n#################\n";
-    cr_assert(eq(ulong, part_1(test_input_2, sizeof(test_input_2)), 11048));
+    cr_assert(eq(str, part_1(test_input_2, sizeof(test_input_2)), "11048"));
 }
 
 Test(aoc, part_2)
 {
     char test_input_1[] = "###############\n#.......#....E#\n#.#.###.#.###.#\n#.....#.#...#.#\n#.###.#####.#.#\n#.#.#.......#.#\n#.#.#####.###.#\n#...........#.#\n###.#.#####.#.#\n#...#.....#.#.#\n#.#.#.###.#.#.#\n#.....#...#.#.#\n#.###.#.#.#.#.#\n#S..#.....#...#\n###############\n";
-    cr_assert(eq(ulong, part_2(test_input_1, sizeof(test_input_1)), 45));
+    cr_assert(eq(str, part_2(test_input_1, sizeof(test_input_1)), "45"));
 
     char test_input_2[] = "#################\n#...#...#...#..E#\n#.#.#.#.#.#.#.#.#\n#.#.#.#...#...#.#\n#.#.#.#.###.#.#.#\n#...#.#.#.....#.#\n#.#.#.#.#.#####.#\n#.#...#.#.#.....#\n#.#.#####.#.###.#\n#.#.#.......#...#\n#.#.###.#####.###\n#.#.#...#.....#.#\n#.#.#.#####.###.#\n#.#.#.........#.#\n#.#.#.#########.#\n#S#.............#\n#################\n";
-    cr_assert(eq(ulong, part_2(test_input_2, sizeof(test_input_2)), 64));
+    cr_assert(eq(str, part_2(test_input_2, sizeof(test_input_2)), "64"));
 }
 #endif

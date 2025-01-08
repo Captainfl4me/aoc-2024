@@ -80,7 +80,7 @@ void empty_queue(result_queue* queue)
         pop_queue(queue);
 }
 
-uint64_t part_1(char* input, size_t strlen)
+char* part_1(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -132,10 +132,10 @@ uint64_t part_1(char* input, size_t strlen)
         empty_queue(&queue);
     }
 
-    return result_sum;
+    return uint64_t_to_str(result_sum);
 }
 
-uint64_t part_2(char* input, size_t strlen)
+char* part_2(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -194,7 +194,7 @@ uint64_t part_2(char* input, size_t strlen)
         empty_queue(&queue);
     }
 
-    return result_sum;
+    return uint64_t_to_str(result_sum);
 }
 
 #ifdef TEST
@@ -204,55 +204,55 @@ uint64_t part_2(char* input, size_t strlen)
 Test(aoc, part_1)
 {
     char test_input[] = "190: 10 19\n3267: 81 40 27\n83: 17 5\n156: 15 6\n7290: 6 8 6 15\n161011: 16 10 13\n192: 17 8 14\n21037: 9 7 18 13\n292: 11 6 16 20\n";
-    cr_assert(eq(int, part_1(test_input, sizeof(test_input)), 3749));
+    cr_assert(eq(str, part_1(test_input, sizeof(test_input)), "3749"));
 }
 Test(aoc, part_1_testcase)
 {
     char test_input_1[] = "190: 10 19 1\n";
-    cr_assert(eq(int, part_1(test_input_1, sizeof(test_input_1)), 190));
+    cr_assert(eq(str, part_1(test_input_1, sizeof(test_input_1)), "190"));
 
     char test_input_2[] = "191: 10 19 1\n";
-    cr_assert(eq(int, part_1(test_input_2, sizeof(test_input_2)), 191));
+    cr_assert(eq(str, part_1(test_input_2, sizeof(test_input_2)), "191"));
 
     char test_input_3[] = "29: 10 19 1\n";
-    cr_assert(eq(int, part_1(test_input_3, sizeof(test_input_3)), 29));
+    cr_assert(eq(str, part_1(test_input_3, sizeof(test_input_3)), "29"));
 
     char test_input_4[] = "30: 10 19 1\n";
-    cr_assert(eq(int, part_1(test_input_4, sizeof(test_input_4)), 30));
+    cr_assert(eq(str, part_1(test_input_4, sizeof(test_input_4)), "30"));
 
     char test_input_5[] = "19000: 10 19 100\n";
-    cr_assert(eq(int, part_1(test_input_5, sizeof(test_input_5)), 19000));
+    cr_assert(eq(str, part_1(test_input_5, sizeof(test_input_5)), "19000"));
 }
 Test(aoc, part_1_big_number)
 {
     char test_input_1[] = "418300198: 83 297 755 54 27\n1361693900: 1 297 8 1 4 86 2 5 665\n59105280: 8 39 32 148 40\n2387431: 6 51 924 3 647 1\n1248447503: 6 4 610 5 6 8 592 83 15\n13146127111: 8 83 2 582 3 9 8 8 9 4 1 2\n15317144898469: 524 37 788 3 79 8 469\n805511: 73 3 7 4 968 149 3 8 9\n1702569: 3 741 9 454 67\n7054236: 2 84 3 42 651\n147968: 2 6 5 15 7 939 21 4 32\n";
-    cr_assert(eq(ulong, part_1(test_input_1, sizeof(test_input_1)), 2678836318));
+    cr_assert(eq(str, part_1(test_input_1, sizeof(test_input_1)), "2678836318"));
 
     char test_input_2[] = "2950073910: 331 35 7 774 47\n";
-    cr_assert(eq(ulong, part_1(test_input_2, sizeof(test_input_2)), 2950073910));
+    cr_assert(eq(str, part_1(test_input_2, sizeof(test_input_2)), "2950073910"));
 
     char test_input_3[] = "401473748420777: 802 94 74 96 841 5 6 5\n";
-    cr_assert(eq(ulong, part_1(test_input_3, sizeof(test_input_3)), 0));
+    cr_assert(eq(str, part_1(test_input_3, sizeof(test_input_3)), "0"));
 
     char test_input_4[] = "246016: 56 274 32 16 3\n";
-    cr_assert(eq(ulong, part_1(test_input_4, sizeof(test_input_4)), 0));
+    cr_assert(eq(str, part_1(test_input_4, sizeof(test_input_4)), "0"));
 }
 
 Test(aoc, part_2)
 {
     char test_input[] = "190: 10 19\n3267: 81 40 27\n83: 17 5\n156: 15 6\n7290: 6 8 6 15\n161011: 16 10 13\n192: 17 8 14\n21037: 9 7 18 13\n292: 11 6 16 20\n";
-    cr_assert(eq(int, part_2(test_input, sizeof(test_input)), 11387));
+    cr_assert(eq(str, part_2(test_input, sizeof(test_input)), "11387"));
 }
 
 Test(aoc, part_2_further_case)
 {
     char test_input_1[] = "1195: 1 19 5\n";
-    cr_assert(eq(int, part_2(test_input_1, sizeof(test_input_1)), 1195));
+    cr_assert(eq(str, part_2(test_input_1, sizeof(test_input_1)), "1195"));
 
     char test_input_2[] = "109: 10 9\n";
-    cr_assert(eq(int, part_2(test_input_2, sizeof(test_input_2)), 109));
+    cr_assert(eq(str, part_2(test_input_2, sizeof(test_input_2)), "109"));
 
     char test_input_3[] = "910: 9 10\n";
-    cr_assert(eq(int, part_2(test_input_3, sizeof(test_input_3)), 910));
+    cr_assert(eq(str, part_2(test_input_3, sizeof(test_input_3)), "910"));
 }
 #endif

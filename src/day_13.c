@@ -11,7 +11,7 @@ typedef enum parse_SM {
     Empty,
 } parse_SM;
 
-uint64_t part_1(char* input, size_t strlen)
+char* part_1(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -68,7 +68,7 @@ uint64_t part_1(char* input, size_t strlen)
     }
     free_string_table(string_vector, nb_line);
 
-    return total_cost;
+    return uint64_t_to_str(total_cost);
 }
 
 typedef struct pos_long {
@@ -76,7 +76,7 @@ typedef struct pos_long {
     int64_t column;
 } pos_long;
 
-uint64_t part_2(char* input, size_t strlen)
+char* part_2(char* input, size_t strlen)
 {
     size_t nb_line = 0;
     string* string_vector = split_by_lines(input, strlen, &nb_line);
@@ -133,7 +133,7 @@ uint64_t part_2(char* input, size_t strlen)
     }
     free_string_table(string_vector, nb_line);
 
-    return total_cost;
+    return uint64_t_to_str(total_cost);
 }
 
 #ifdef TEST
@@ -143,12 +143,12 @@ uint64_t part_2(char* input, size_t strlen)
 Test(aoc, part_1)
 {
     char test_input_1[] = "Button A: X+94, Y+34\nButton B: X+22, Y+67\nPrize: X=8400, Y=5400\n\nButton A: X+26, Y+66\nButton B: X+67, Y+21\nPrize: X=12748, Y=12176\n\nButton A: X+17, Y+86\nButton B: X+84, Y+37\nPrize: X=7870, Y=6450\n\nButton A: X+69, Y+23\nButton B: X+27, Y+71\nPrize: X=18641, Y=10279\n";
-    cr_assert(eq(int, part_1(test_input_1, sizeof(test_input_1)), 480));
+    cr_assert(eq(str, part_1(test_input_1, sizeof(test_input_1)), "480"));
 }
 
 Test(aoc, part_2)
 {
     char test_input_1[] = "Button A: X+94, Y+34\nButton B: X+22, Y+67\nPrize: X=8400, Y=5400\n\nButton A: X+26, Y+66\nButton B: X+67, Y+21\nPrize: X=12748, Y=12176\n\nButton A: X+17, Y+86\nButton B: X+84, Y+37\nPrize: X=7870, Y=6450\n\nButton A: X+69, Y+23\nButton B: X+27, Y+71\nPrize: X=18641, Y=10279\n";
-    cr_assert(eq(long, part_2(test_input_1, sizeof(test_input_1)), 875318608908));
+    cr_assert(eq(str, part_2(test_input_1, sizeof(test_input_1)), "875318608908"));
 }
 #endif

@@ -18,7 +18,7 @@ uint8_t is_file_eq(file_block a, file_block b)
 
 LIST_DECL(file_block, 5, is_file_eq);
 
-uint64_t part_1(char* input, size_t strlen)
+char* part_1(char* input, size_t strlen)
 {
     list_file_block filesystem = { .vector = NULL };
     uint8_t first_set = 0;
@@ -58,10 +58,10 @@ uint64_t part_1(char* input, size_t strlen)
         }
     }
 
-    return checksum;
+    return uint64_t_to_str(checksum);
 }
 
-uint64_t part_2(char* input, size_t strlen)
+char* part_2(char* input, size_t strlen)
 {
     list_file_block filesystem = { .vector = NULL };
     init_list_file_block(&filesystem);
@@ -108,7 +108,7 @@ uint64_t part_2(char* input, size_t strlen)
         index += filesystem.vector[i].free_space;
     }
 
-    return checksum;
+    return uint64_t_to_str(checksum);
 }
 
 #ifdef TEST
@@ -118,12 +118,12 @@ uint64_t part_2(char* input, size_t strlen)
 Test(aoc, part_1)
 {
     char test_input[] = "2333133121414131402";
-    cr_assert(eq(int, part_1(test_input, sizeof(test_input)), 1928));
+    cr_assert(eq(str, part_1(test_input, sizeof(test_input)), "1928"));
 }
 
 Test(aoc, part_2)
 {
     char test_input[] = "2333133121414131402";
-    cr_assert(eq(int, part_2(test_input, sizeof(test_input)), 2858));
+    cr_assert(eq(str, part_2(test_input, sizeof(test_input)), "2858"));
 }
 #endif
